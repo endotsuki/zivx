@@ -9,7 +9,7 @@ export const getPlatformIcon = (url: string): PlatformIcon => {
   if (urlLower.includes('tiktok')) return { type: 'iconza', name: 'TikTokFill' };
   if (urlLower.includes('instagram')) return { type: 'iconza', name: 'Instagram' };
   if (urlLower.includes('pin')) return { type: 'iconza', name: 'Pinterest' };
-  if (urlLower.includes('x.com')) return { type: 'iconza', name: 'Twitter' };
+  if (urlLower.includes('x.com')) return { type: 'iconza', name: 'X Light' };
   if (urlLower.includes('linkedin')) return { type: 'iconza', name: 'LinkedIn' };
   if (urlLower.includes('reddit')) return { type: 'iconza', name: 'Reddit' };
   if (urlLower.includes('twitch')) return { type: 'iconza', name: 'Twitch' };
