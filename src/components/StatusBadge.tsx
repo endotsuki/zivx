@@ -21,51 +21,51 @@ export function StatusBadge({ status }: StatusBadgeProps) {
     switch (statusLower) {
       case 'queued':
         return {
-          bg: 'bg-zinc-100',
-          text: 'text-zinc-700',
-          border: 'border-zinc-400',
+          bg: 'bg-orange-50',
+          text: 'text-orange-700',
+          border: 'border-orange-300',
           icon: HourglassIcon,
         };
       case 'starting':
         return {
-          bg: 'bg-sky-100',
-          text: 'text-sky-700',
-          border: 'border-sky-400',
+          bg: 'bg-blue-50',
+          text: 'text-blue-700',
+          border: 'border-blue-300',
           icon: Rocket01Icon,
         };
       case 'downloading':
         return {
-          bg: 'bg-orange-100',
-          text: 'text-orange-700',
-          border: 'border-orange-400',
+          bg: 'bg-blue-50',
+          text: 'text-blue-700',
+          border: 'border-blue-300',
           icon: Loading03Icon,
         };
       case 'merging':
         return {
-          bg: 'bg-amber-100',
+          bg: 'bg-amber-50',
           text: 'text-amber-700',
-          border: 'border-amber-400',
+          border: 'border-amber-300',
           icon: Link05Icon,
         };
       case 'completed':
         return {
-          bg: 'bg-emerald-100',
+          bg: 'bg-emerald-50',
           text: 'text-emerald-700',
-          border: 'border-emerald-400',
+          border: 'border-emerald-300',
           icon: Tick02Icon,
         };
       case 'error':
         return {
-          bg: 'bg-rose-100',
-          text: 'text-rose-700',
-          border: 'border-rose-400',
+          bg: 'bg-pink-50',
+          text: 'text-pink-700',
+          border: 'border-pink-300',
           icon: Cancel01Icon,
         };
       default:
         return {
-          bg: 'bg-zinc-100',
+          bg: 'bg-zinc-50',
           text: 'text-zinc-700',
-          border: 'border-zinc-400',
+          border: 'border-zinc-300',
           icon: AnonymousIcon,
         };
     }

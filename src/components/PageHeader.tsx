@@ -10,7 +10,7 @@ const supportedPlatforms = [
   { name: 'Instagram', icon: 'Instagram' },
   { name: 'Pinterest', icon: 'Pinterest' },
   { name: 'Vimeo', icon: 'Vimeo' },
-  { name: 'X', icon: 'X Light' },
+  { name: 'X', icon: 'X Dark' },
   { name: 'Twitch', icon: 'Twitch' },
   { name: 'Reddit', icon: 'Reddit' },
   { name: 'LinkedIn', icon: 'LinkedIn' },
@@ -44,7 +44,10 @@ export function PageHeader() {
             <DropdownMenuSeparator />
             <div className='grid grid-cols-4 gap-2 p-2'>
               {supportedPlatforms.map((platform) => (
-                <div key={platform.name} className='flex cursor-pointer flex-col items-center gap-1 rounded-xl p-2 transition-colors hover:bg-orange-100'>
+                <div
+                  key={platform.name}
+                  className='flex cursor-pointer flex-col items-center gap-1 rounded-xl p-2 transition-colors hover:bg-orange-100'
+                >
                   <Icon name={platform.icon} className='h-6 w-6 text-zinc-700' />
                   <span className='text-xs text-zinc-700'>{platform.name}</span>
                 </div>

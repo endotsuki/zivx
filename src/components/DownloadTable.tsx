@@ -25,8 +25,10 @@ export function DownloadTable({ queue, currentPage, rowsPerPage, setCurrentPage,
 
   return (
     <div className='space-y-4'>
-      {/* delete video */}
-      <div className='flex justify-end'>
+      <div className='flex flex-wrap items-center justify-between gap-3 rounded-2xl border-2 border-zinc-900/15 bg-white px-3 py-2'>
+        <p className='text-sm font-semibold text-zinc-700'>
+          {queue.length > 0 ? `${queue.length} item${queue.length > 1 ? 's' : ''} in queue` : 'Queue is empty'}
+        </p>
         <Button variant='ghost' onClick={clearDownloads} size='icon' className='text-zinc-700 hover:bg-rose-100 hover:text-rose-600'>
           <HugeiconsIcon icon={Delete01Icon} size={20} />
         </Button>

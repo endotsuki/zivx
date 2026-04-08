@@ -167,10 +167,17 @@ export default function VideoDownloader() {
   return (
     <div className='min-h-screen bg-[#f7f3eb] p-4 text-zinc-900 sm:p-6'>
       <div className='pointer-events-none fixed inset-0 -z-0 opacity-60 [background:radial-gradient(circle_at_85%_12%,#ffd3a6_0%,transparent_28%),radial-gradient(circle_at_12%_90%,#ffe9b8_0%,transparent_24%)]' />
-      <div className='relative z-10 mx-auto w-[95%] max-w-[1600px]'>
+      <div className='relative z-10 mx-auto w-[95%] max-w-[1240px] space-y-5'>
         <PageHeader />
 
         <div className='rounded-[28px] border-[3px] border-zinc-900 bg-[#fffdfa] p-4 shadow-[8px_8px_0_0_#111827] sm:p-6'>
+          <div className='mb-4 flex flex-wrap items-end justify-between gap-2 border-b-2 border-zinc-900/10 pb-3'>
+            <div>
+              <p className='text-xs font-semibold uppercase tracking-widest text-zinc-600'>Quick Add</p>
+              <h2 className='text-lg font-black text-zinc-900 sm:text-xl'>Paste links and start downloading</h2>
+            </div>
+            <p className='text-xs text-zinc-600'>Tip: Press Enter to submit quickly</p>
+          </div>
           <DownloadControls
             videoLink={videoLink}
             setVideoLink={setVideoLink}
@@ -182,11 +189,15 @@ export default function VideoDownloader() {
           />
         </div>
 
-        <div className='mt-5'>
+        <div>
           <StatsCards total={stats.total} completed={stats.completed} downloading={stats.downloading} queued={queuedCount} />
         </div>
 
         <div className='rounded-[28px] border-[3px] border-zinc-900 bg-[#fffdfa] p-4 shadow-[8px_8px_0_0_#111827] sm:p-6'>
+          <div className='mb-4 border-b-2 border-zinc-900/10 pb-3'>
+            <p className='text-xs font-semibold uppercase tracking-widest text-zinc-600'>Activity</p>
+            <h2 className='text-lg font-black text-zinc-900 sm:text-xl'>Download Queue</h2>
+          </div>
           <DownloadTable
             queue={stats.queue}
             currentPage={currentPage}

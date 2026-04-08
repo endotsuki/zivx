@@ -15,7 +15,7 @@ interface DownloadControlsProps {
 }
 
 const inputBase =
-  'w-full rounded-2xl border-2 border-zinc-900 bg-white px-3.5 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-orange-500';
+  'w-full rounded-2xl border-2 border-zinc-900 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-orange-500 focus:ring-2 focus:ring-orange-200';
 
 export function DownloadControls({
   videoLink,
@@ -57,35 +57,37 @@ export function DownloadControls({
       {/* Primary: URL + Download */}
       <div>
         <label className='mb-1.5 block text-xs font-semibold uppercase tracking-wider text-zinc-700'>Single URL</label>
-        <div className='relative flex flex-col gap-2 sm:flex-row sm:gap-3'>
+        <div className='relative flex flex-col gap-2 sm:flex-row sm:items-stretch sm:gap-3'>
           <div className='relative flex-1'>
             <input
-              className={`h-12 w-full min-w-0 rounded-xl pr-11 ${inputBase}`}
+              className={`h-12 w-full min-w-0 rounded-2xl pr-24 ${inputBase}`}
               type='text'
               placeholder='Paste video URL…'
               value={videoLink}
               onChange={(e) => setVideoLink(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && queueSingle()}
             />
-            <div className='pointer-events-none absolute right-10 top-1/2 h-6 w-px -translate-y-1/2 bg-zinc-300' />
-            <Button variant='ghost' size='icon' onClick={handlePasteFromClipboard} className='absolute right-1 top-1/2 -translate-y-1/2'>
-              <HugeiconsIcon icon={Task02Icon} size={20} className='text-orange-500' />
-            </Button>
+            <div className='absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1 rounded-xl border border-zinc-200 bg-zinc-50 px-1 py-1'>
+              <Button variant='ghost' size='icon' onClick={handlePasteFromClipboard} className='h-7 w-7 rounded-lg'>
+                <HugeiconsIcon icon={Task02Icon} size={16} className='text-orange-500' />
+              </Button>
+            </div>
           </div>
 
           <Button
             variant='on-hold'
             onClick={queueSingle}
-            className='shrink-0 border-2 border-zinc-900 bg-orange-500 text-white hover:bg-orange-600 sm:w-auto'
+            className='h-12 shrink-0 rounded-2xl border-2 border-zinc-900 bg-orange-500 px-6 text-base font-semibold text-white hover:bg-orange-600 sm:w-auto'
           >
             <HugeiconsIcon icon={Download01Icon} size={20} />
             Download
           </Button>
         </div>
+        <p className='mt-2 text-xs font-medium text-zinc-600'>Supports TikTok, Facebook, YouTube, Instagram, and more.</p>
       </div>
 
       {/* Secondary: Folder, Batch, Clear */}
-      <div className='flex flex-col gap-4 border-t-2 border-zinc-900/20 py-9 sm:flex-row sm:items-center'>
+      <div className='flex flex-col gap-4 border-t-2 border-zinc-900/20 pt-5 sm:flex-row sm:items-center'>
         <motion.div layout className='flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:gap-3'>
           <span className='shrink-0 text-xs font-semibold uppercase tracking-wider text-zinc-700'>Save to</span>
 
@@ -95,7 +97,7 @@ export function DownloadControls({
               layout
               type='button'
               onClick={handleSelectDirectory}
-              className={`flex min-h-[40px] min-w-0 flex-1 items-center ${inputBase} cursor-pointer`}
+              className={`flex min-h-[46px] min-w-0 flex-1 items-center ${inputBase} cursor-pointer`}
             >
               <AnimatePresence mode='popLayout'>
                 {selectedDirectory ? (
@@ -132,7 +134,7 @@ export function DownloadControls({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   onClick={() => setSelectedDirectory(null)}
-                  className='flex h-[40px] items-center gap-1 rounded-md px-3 text-zinc-600 transition-colors hover:text-red-500'
+                  className='flex h-[46px] items-center gap-1 rounded-xl border-2 border-zinc-900 bg-white px-3 text-zinc-600 transition-colors hover:bg-rose-50 hover:text-red-500'
                 >
                   <HugeiconsIcon icon={Delete01Icon} size={20} />
                   Clear
@@ -145,7 +147,7 @@ export function DownloadControls({
         <div className='hidden h-8 w-px shrink-0 bg-zinc-300 sm:block' />
         <div className='flex flex-wrap items-center gap-2'>
           <input ref={fileInputRef} type='file' accept='.txt' className='hidden' id='batch-file' onChange={uploadList} />
-          <Button variant='archived'>
+          <Button variant='archived' className='h-[46px] rounded-2xl px-4'>
             <label htmlFor='batch-file' className='inline-flex cursor-pointer items-center justify-center gap-2'>
               <HugeiconsIcon icon={Download05Icon} size={20} />
               Batch link .txt
