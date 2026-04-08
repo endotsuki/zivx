@@ -23,27 +23,30 @@ const supportedPlatforms = [
 export function PageHeader() {
   return (
     <div className='mb-6 flex flex-wrap items-center justify-between gap-4'>
-      <div className='flex items-center gap-2'>
-        <img src='/logo.png' alt='Logo' className='h-10 w-10' />
-        <h1 className='text-3xl font-semibold text-white'>Dovio</h1>
+      <div className='flex items-center gap-3'>
+        <img src='/logo.png' alt='Logo' className='h-11 w-11 rounded-2xl border-2 border-zinc-900 bg-white p-1' />
+        <div>
+          <h1 className='text-3xl font-black tracking-tight text-zinc-900'>Dovio</h1>
+          <p className='text-xs font-semibold uppercase tracking-wider text-zinc-600'>Playful video downloader</p>
+        </div>
       </div>
 
       <div className='flex items-center'>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='select-none'>
+            <Button variant='outline' className='select-none border-2 border-zinc-900 bg-white text-zinc-900 hover:bg-orange-100'>
               <HugeiconsIcon icon={Clapping02Icon} size={23} />
               Supported Services
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className='w-80'>
-            <DropdownMenuLabel>Supported Platforms</DropdownMenuLabel>
+          <DropdownMenuContent className='w-80 border-2 border-zinc-900 bg-[#fffdfa]'>
+            <DropdownMenuLabel className='text-zinc-800'>Supported Platforms</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <div className='grid grid-cols-4 gap-2 p-2'>
               {supportedPlatforms.map((platform) => (
-                <div key={platform.name} className='flex cursor-pointer flex-col items-center gap-1 rounded-lg p-2 hover:bg-zinc-700/50'>
-                  <Icon name={platform.icon} className='h-6 w-6 text-gray-400' />
-                  <span className='text-xs text-gray-300'>{platform.name}</span>
+                <div key={platform.name} className='flex cursor-pointer flex-col items-center gap-1 rounded-xl p-2 transition-colors hover:bg-orange-100'>
+                  <Icon name={platform.icon} className='h-6 w-6 text-zinc-700' />
+                  <span className='text-xs text-zinc-700'>{platform.name}</span>
                 </div>
               ))}
             </div>

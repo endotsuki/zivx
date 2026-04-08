@@ -32,7 +32,7 @@ function DropdownMenuContent({
         sideOffset={sideOffset}
         align={align}
         className={cn(
-          'data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] w-[var(--radix-dropdown-menu-trigger-width)] min-w-32 origin-[var(--radix-dropdown-menu-content-transform-origin)] overflow-y-auto overflow-x-hidden rounded-xl border border-zinc-700 bg-zinc-800 p-1 text-zinc-200 shadow-xl shadow-black/30 duration-100 data-[state=closed]:overflow-hidden',
+          'data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] w-[var(--radix-dropdown-menu-trigger-width)] min-w-32 origin-[var(--radix-dropdown-menu-content-transform-origin)] overflow-y-auto overflow-x-hidden rounded-xl border-2 border-zinc-900 bg-[#fffdfa] p-1 text-zinc-800 shadow-[4px_4px_0_0_#111827] duration-100 data-[state=closed]:overflow-hidden',
           className
         )}
         {...props}
@@ -60,7 +60,7 @@ function DropdownMenuItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        'not-data-[variant=destructive]:text-zinc-300 group/dropdown-menu-item relative flex cursor-pointer select-none items-center gap-1.5 rounded-lg px-2.5 py-2 text-sm hover:bg-zinc-700/80 focus:bg-zinc-700/80 data-[disabled]:pointer-events-none data-[inset]:pl-8 data-[variant=destructive]:text-red-400 data-[disabled]:opacity-50',
+        'not-data-[variant=destructive]:text-zinc-800 group/dropdown-menu-item relative flex cursor-pointer select-none items-center gap-1.5 rounded-lg px-2.5 py-2 text-sm hover:bg-orange-100 focus:bg-orange-100 data-[disabled]:pointer-events-none data-[inset]:pl-8 data-[variant=destructive]:text-red-500 data-[disabled]:opacity-50',
         className
       )}
       {...props}
@@ -135,7 +135,7 @@ function DropdownMenuLabel({
     <DropdownMenuPrimitive.Label
       data-slot='dropdown-menu-label'
       data-inset={inset}
-      className={cn('px-2.5 py-1.5 text-xs font-medium uppercase tracking-wider text-zinc-500 data-[inset]:pl-8', className)}
+      className={cn('px-2.5 py-1.5 text-xs font-medium uppercase tracking-wider text-zinc-600 data-[inset]:pl-8', className)}
       {...props}
     />
   );
@@ -145,7 +145,7 @@ function DropdownMenuSeparator({ className, ...props }: React.ComponentProps<typ
   return (
     <DropdownMenuPrimitive.Separator
       data-slot='dropdown-menu-separator'
-      className={cn('-mx-1 my-1 h-px bg-zinc-700', className)}
+      className={cn('-mx-1 my-1 h-px bg-zinc-300', className)}
       {...props}
     />
   );

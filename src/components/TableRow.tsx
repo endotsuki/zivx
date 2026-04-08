@@ -73,15 +73,15 @@ export function TableRow({ item }: TableRowProps) {
   const platformIcon = getPlatformIcon(item.url);
 
   return (
-    <div className='group relative flex items-center gap-3 rounded-lg bg-zinc-900/60 p-3 transition-all hover:bg-zinc-800/60'>
-      <div className='relative h-24 w-24 overflow-hidden rounded-xl bg-zinc-800'>
+    <div className='group relative flex items-center gap-3 rounded-2xl border-2 border-zinc-900/90 bg-[#fffdfa] p-3 transition-all hover:-translate-y-0.5'>
+      <div className='relative h-24 w-24 overflow-hidden rounded-xl border-2 border-zinc-900/80 bg-zinc-100'>
         {thumbnailLoading ? (
           <div className='flex h-full w-full items-center justify-center'>
-            <div className='h-8 w-8 animate-spin rounded-full border-2 border-zinc-600 border-t-zinc-400'></div>
+            <div className='h-8 w-8 animate-spin rounded-full border-2 border-zinc-400 border-t-orange-500'></div>
           </div>
         ) : thumbnailError || !thumbnail ? (
-          <div className='flex h-full w-full items-center justify-center bg-zinc-800/80'>
-            <svg className='h-full w-full p-6 text-zinc-600' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+          <div className='flex h-full w-full items-center justify-center bg-zinc-100'>
+            <svg className='h-full w-full p-6 text-zinc-500' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -109,7 +109,7 @@ export function TableRow({ item }: TableRowProps) {
             href={item.url}
             target='_blank'
             rel='noopener noreferrer'
-            className='line-clamp-2 block text-xs font-medium text-zinc-200 transition-colors hover:text-blue-400 hover:underline sm:text-sm'
+            className='line-clamp-2 block text-xs font-semibold text-zinc-900 transition-colors hover:text-orange-600 hover:underline sm:text-sm'
             title={title ?? undefined}
             aria-label={title || item.url}
           >
@@ -119,12 +119,12 @@ export function TableRow({ item }: TableRowProps) {
         <div className='mb-2'>
           <ProgressBar progress={item.progress ?? 0} />
         </div>
-        <div className='flex items-center justify-between text-xs text-zinc-400'>
+        <div className='flex items-center justify-between text-xs text-zinc-600'>
           <div className='flex items-center gap-3'>
             <StatusBadge status={item.status} />
             <span>{getDownloadSpeed()}</span>
           </div>
-          <div className='flex items-center justify-between text-xs text-zinc-400'>
+          <div className='flex items-center justify-between text-xs text-zinc-600'>
             <span>{item.progress?.toFixed(1) || '0.0'}%</span>
           </div>
         </div>

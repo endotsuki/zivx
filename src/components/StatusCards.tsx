@@ -13,11 +13,11 @@ interface StatsCardsProps {
 }
 export function StatsCards({ total, completed, downloading, queued }: StatsCardsProps) {
   const stats = [
-    { label: 'Total', value: total, color: 'text-zinc-100', ring: 'ring-zinc-500/20' },
-    { label: 'Completed', value: completed, color: 'text-green-400', ring: 'ring-green-500/20' },
-    { label: 'Downloading', value: downloading, color: 'text-blue-400', ring: 'ring-blue-500/20' },
-    { label: 'Queued', value: queued, color: 'text-amber-400', ring: 'ring-amber-500/20' },
-    { label: 'Failed', value: total - completed - downloading - queued, color: 'text-red-400', ring: 'ring-red-500/20' },
+    { label: 'Total', value: total, color: 'text-zinc-900', border: 'border-zinc-900' },
+    { label: 'Completed', value: completed, color: 'text-emerald-600', border: 'border-emerald-600' },
+    { label: 'Downloading', value: downloading, color: 'text-sky-600', border: 'border-sky-600' },
+    { label: 'Queued', value: queued, color: 'text-amber-600', border: 'border-amber-600' },
+    { label: 'Failed', value: total - completed - downloading - queued, color: 'text-rose-600', border: 'border-rose-600' },
   ];
 
   return (
@@ -25,10 +25,10 @@ export function StatsCards({ total, completed, downloading, queued }: StatsCards
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className={`group relative rounded-2xl bg-zinc-900/40 p-6 ring-1 ${stat.ring} backdrop-blur-sm transition-all hover:border-zinc-700 hover:bg-zinc-800/50 hover:ring-4`}
+          className={`group relative rounded-3xl border-2 bg-[#fffdfa] p-6 shadow-[4px_4px_0_0_#111827] transition-all hover:-translate-y-0.5 ${stat.border}`}
         >
-          <div className='mb-1 text-xs font-semibold uppercase tracking-wider text-zinc-500'>{stat.label}</div>
-          <div className={`text-5xl font-bold tabular-nums ${stat.color}`}>{stat.value}</div>
+          <div className='mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-600'>{stat.label}</div>
+          <div className={`text-5xl font-black tabular-nums ${stat.color}`}>{stat.value}</div>
         </div>
       ))}
     </div>

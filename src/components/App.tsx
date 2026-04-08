@@ -165,37 +165,45 @@ export default function VideoDownloader() {
   const queuedCount = stats.queue.filter((q) => q.status === 'Queued').length;
 
   return (
-    <div className='min-h-screen bg-[#0a0e17] p-6 text-white'>
-      <div className='mx-auto w-[95%] max-w-[1600px]'>
+    <div className='min-h-screen bg-[#f7f3eb] p-4 text-zinc-900 sm:p-6'>
+      <div className='pointer-events-none fixed inset-0 -z-0 opacity-60 [background:radial-gradient(circle_at_85%_12%,#ffd3a6_0%,transparent_28%),radial-gradient(circle_at_12%_90%,#ffe9b8_0%,transparent_24%)]' />
+      <div className='relative z-10 mx-auto w-[95%] max-w-[1600px]'>
         <PageHeader />
-        <DownloadControls
-          videoLink={videoLink}
-          setVideoLink={setVideoLink}
-          selectedDirectory={selectedDirectory}
-          setSelectedDirectory={setSelectedDirectory}
-          queueSingle={queueSingle}
-          uploadList={uploadList}
-          fileInputRef={fileInputRef}
-        />
 
-        <StatsCards total={stats.total} completed={stats.completed} downloading={stats.downloading} queued={queuedCount} />
+        <div className='rounded-[28px] border-[3px] border-zinc-900 bg-[#fffdfa] p-4 shadow-[8px_8px_0_0_#111827] sm:p-6'>
+          <DownloadControls
+            videoLink={videoLink}
+            setVideoLink={setVideoLink}
+            selectedDirectory={selectedDirectory}
+            setSelectedDirectory={setSelectedDirectory}
+            queueSingle={queueSingle}
+            uploadList={uploadList}
+            fileInputRef={fileInputRef}
+          />
+        </div>
 
-        <DownloadTable
-          queue={stats.queue}
-          currentPage={currentPage}
-          rowsPerPage={rowsPerPage}
-          setCurrentPage={setCurrentPage}
-          clearDownloads={clearDownloads}
-          setRowsPerPage={setRowsPerPage}
-        />
+        <div className='mt-5'>
+          <StatsCards total={stats.total} completed={stats.completed} downloading={stats.downloading} queued={queuedCount} />
+        </div>
+
+        <div className='rounded-[28px] border-[3px] border-zinc-900 bg-[#fffdfa] p-4 shadow-[8px_8px_0_0_#111827] sm:p-6'>
+          <DownloadTable
+            queue={stats.queue}
+            currentPage={currentPage}
+            rowsPerPage={rowsPerPage}
+            setCurrentPage={setCurrentPage}
+            clearDownloads={clearDownloads}
+            setRowsPerPage={setRowsPerPage}
+          />
+        </div>
 
         {/* Footer */}
-        <div className='mt-6 border-t border-white/10 pt-6 text-center'>
-          <p className='text-sm text-gray-400'>
-            Auto-refresh every <span className='font-medium text-white'>1s</span> • Processing{' '}
-            <span className='font-medium text-white'>one by one</span> • Supports <span className='font-medium text-white'>500+ links</span>
+        <div className='mt-6 border-t-2 border-zinc-900/20 pt-6 text-center'>
+          <p className='text-sm text-zinc-700'>
+            Auto-refresh every <span className='font-semibold text-zinc-900'>1s</span> • Processing{' '}
+            <span className='font-semibold text-zinc-900'>one by one</span> • Supports <span className='font-semibold text-zinc-900'>500+ links</span>
           </p>
-          <p className='mt-2 select-none text-sm text-gray-400'>&copy; {new Date().getFullYear()} MMO &bull; All rights reserved</p>
+          <p className='mt-2 select-none text-sm text-zinc-600'>&copy; {new Date().getFullYear()} MMO &bull; All rights reserved</p>
         </div>
       </div>
     </div>

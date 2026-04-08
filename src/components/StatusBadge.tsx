@@ -21,51 +21,51 @@ export function StatusBadge({ status }: StatusBadgeProps) {
     switch (statusLower) {
       case 'queued':
         return {
-          bg: 'bg-gray-500/20',
-          text: 'text-gray-300',
-          border: 'border-gray-500/30',
+          bg: 'bg-zinc-100',
+          text: 'text-zinc-700',
+          border: 'border-zinc-400',
           icon: HourglassIcon,
         };
       case 'starting':
         return {
-          bg: 'bg-blue-500/20',
-          text: 'text-blue-300',
-          border: 'border-blue-500/30',
+          bg: 'bg-sky-100',
+          text: 'text-sky-700',
+          border: 'border-sky-400',
           icon: Rocket01Icon,
         };
       case 'downloading':
         return {
-          bg: 'bg-blue-500/20',
-          text: 'text-blue-400',
-          border: 'border-blue-500/30',
+          bg: 'bg-orange-100',
+          text: 'text-orange-700',
+          border: 'border-orange-400',
           icon: Loading03Icon,
         };
       case 'merging':
         return {
-          bg: 'bg-cyan-500/20',
-          text: 'text-cyan-300',
-          border: 'border-cyan-500/30',
+          bg: 'bg-amber-100',
+          text: 'text-amber-700',
+          border: 'border-amber-400',
           icon: Link05Icon,
         };
       case 'completed':
         return {
-          bg: 'bg-emerald-500/20',
-          text: 'text-emerald-300',
-          border: 'border-emerald-500/30',
+          bg: 'bg-emerald-100',
+          text: 'text-emerald-700',
+          border: 'border-emerald-400',
           icon: Tick02Icon,
         };
       case 'error':
         return {
-          bg: 'bg-red-500/20',
-          text: 'text-red-300',
-          border: 'border-red-500/30',
+          bg: 'bg-rose-100',
+          text: 'text-rose-700',
+          border: 'border-rose-400',
           icon: Cancel01Icon,
         };
       default:
         return {
-          bg: 'bg-white/10',
-          text: 'text-gray-300',
-          border: 'border-white/20',
+          bg: 'bg-zinc-100',
+          text: 'text-zinc-700',
+          border: 'border-zinc-400',
           icon: AnonymousIcon,
         };
     }
@@ -77,10 +77,10 @@ export function StatusBadge({ status }: StatusBadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium ${style.bg} ${style.text} ${style.border} backdrop-blur-sm`}
+      className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium ${style.bg} ${style.text} ${style.border}`}
     >
       {isDownloading ? (
-        <div className='h-4 w-4 animate-spin rounded-full border-2 border-blue-400/20 border-t-blue-400'></div>
+        <div className='h-4 w-4 animate-spin rounded-full border-2 border-orange-300 border-t-orange-600'></div>
       ) : (
         <HugeiconsIcon icon={style.icon} size={16} />
       )}
