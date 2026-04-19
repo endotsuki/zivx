@@ -83,7 +83,6 @@ export function DownloadControls({
             Download
           </Button>
         </div>
-        <p className='mt-2 text-xs font-medium text-zinc-600'>Supports TikTok, Facebook, YouTube, Instagram, and more.</p>
       </div>
 
       {/* Secondary: Folder, Batch, Clear */}

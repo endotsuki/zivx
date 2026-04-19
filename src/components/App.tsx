@@ -207,15 +207,6 @@ export default function VideoDownloader() {
             setRowsPerPage={setRowsPerPage}
           />
         </div>
-
-        {/* Footer */}
-        <div className='mt-6 border-t-2 border-zinc-900/20 pt-6 text-center'>
-          <p className='text-sm text-zinc-700'>
-            Auto-refresh every <span className='font-semibold text-zinc-900'>1s</span> • Processing{' '}
-            <span className='font-semibold text-zinc-900'>one by one</span> • Supports <span className='font-semibold text-zinc-900'>500+ links</span>
-          </p>
-          <p className='mt-2 select-none text-sm text-zinc-600'>&copy; {new Date().getFullYear()} MMO &bull; All rights reserved</p>
-        </div>
       </div>
     </div>
   );
