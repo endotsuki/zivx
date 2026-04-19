@@ -10,7 +10,13 @@ export function StatsCards({ total, completed, downloading, queued }: StatsCards
     { label: 'Completed', value: completed, color: 'text-emerald-700', border: 'border-emerald-600', bg: 'bg-emerald-50' },
     { label: 'Downloading', value: downloading, color: 'text-blue-700', border: 'border-blue-600', bg: 'bg-blue-50' },
     { label: 'Queued', value: queued, color: 'text-orange-700', border: 'border-orange-500', bg: 'bg-orange-50' },
-    { label: 'Failed', value: total - completed - downloading - queued, color: 'text-pink-700', border: 'border-pink-600', bg: 'bg-pink-50' },
+    {
+      label: 'Failed',
+      value: total - completed - downloading - queued,
+      color: 'text-pink-700',
+      border: 'border-pink-600',
+      bg: 'bg-pink-50',
+    },
   ];
 
   return (

@@ -24,7 +24,7 @@ export function PageHeader() {
   return (
     <div className='mb-6 flex flex-wrap items-center justify-between gap-4'>
       <div className='flex items-center gap-3'>
-        <img src='/logo.png' alt='Logo' className='h-11 w-11 rounded-2xl border-2 border-zinc-900 bg-white p-1' />
+        <img src='/logo.png' alt='Logo' className='h-11 w-11' />
         <div>
           <h1 className='text-3xl font-black tracking-tight text-zinc-900'>Dovio</h1>
           <p className='text-xs font-semibold uppercase tracking-wider text-zinc-600'>Playful video downloader</p>
