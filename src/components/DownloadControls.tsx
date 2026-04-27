@@ -17,7 +17,7 @@ interface DownloadControlsProps {
 }
 
 const inputBase =
-  'w-full rounded-2xl border-2 border-zinc-900 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-orange-500 focus:ring-2 focus:ring-orange-200';
+  'w-full rounded-2xl border-2 border-zinc-900 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-rose-500 focus:ring-2 focus:ring-rose-200';
 
 export function DownloadControls({
   videoLink,
@@ -73,7 +73,7 @@ export function DownloadControls({
             {activeTab === tab && (
               <motion.div
                 layoutId='activeTabBg'
-                className={`absolute inset-0 rounded-xl ${tab === 'audio' ? 'bg-violet-600' : 'bg-orange-500'}`}
+                className={`absolute inset-0 rounded-xl ${tab === 'audio' ? 'bg-violet-600' : 'bg-rose-500'}`}
                 transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
               />
             )}
@@ -103,7 +103,7 @@ export function DownloadControls({
             {/* Paste from clipboard */}
             <div className='absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1 rounded-xl border border-zinc-200 bg-zinc-50 px-1 py-1'>
               <Button variant='ghost' size='icon' onClick={handlePasteFromClipboard} className='h-7 w-7 rounded-lg'>
-                <HugeiconsIcon icon={Task02Icon} size={16} className='text-orange-500' />
+                <HugeiconsIcon icon={Task02Icon} size={16} className='text-rose-500' />
               </Button>
             </div>
           </div>
@@ -112,20 +112,13 @@ export function DownloadControls({
             variant='on-hold'
             onClick={queueSingle}
             className={`h-12 shrink-0 rounded-2xl border-2 border-zinc-900 px-6 text-base font-semibold text-white sm:w-auto ${
-              isAudio ? 'bg-violet-600 hover:bg-violet-700' : 'bg-orange-500 hover:bg-orange-600'
+              isAudio ? 'bg-violet-600 hover:bg-violet-700' : 'bg-rose-500 hover:bg-rose-600'
             }`}
           >
             <HugeiconsIcon icon={isAudio ? MusicNote03Icon : VideoAiIcon} size={20} />
             {isAudio ? 'Extract MP3' : 'Download MP4'}
           </Button>
         </div>
-
-        {/* Hint text */}
-        <p className='mt-1.5 text-xs text-zinc-500'>
-          {isAudio
-            ? 'Works with YouTube, SoundCloud, and most video sites — audio only, no video.'
-            : 'Supports YouTube, TikTok (video & photo posts), and 1000+ sites.'}
-        </p>
       </div>
 
       {/* ── Save Folder + Batch Upload ── */}
@@ -150,7 +143,7 @@ export function DownloadControls({
                     exit={{ opacity: 0, y: -4 }}
                     className='flex min-w-0 items-center truncate text-zinc-700'
                   >
-                    <HugeiconsIcon icon={Folder01Icon} size={20} className='mr-1 fill-orange-500 text-transparent' />
+                    <HugeiconsIcon icon={Folder01Icon} size={20} className='mr-1 fill-rose-500 text-transparent' />
                     {selectedDirectory.name}
                   </motion.span>
                 ) : (

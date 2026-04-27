@@ -40,7 +40,7 @@ export function TablePagination({
       <div className='flex items-center gap-3'>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='archived' className='gap-2 border-2 border-zinc-900 bg-white text-zinc-700 hover:bg-orange-100'>
+            <Button variant='archived' className='gap-2 border-2 border-zinc-900 bg-white text-zinc-700 hover:bg-rose-100'>
               Show <span className='font-semibold text-zinc-900'>{rowsPerPage}</span>
             </Button>
           </DropdownMenuTrigger>
@@ -72,14 +72,14 @@ export function TablePagination({
           variant='archived'
           onClick={() => setCurrentPage(currentPage - 1)}
           disabled={currentPage <= 1}
-          className='h-9 border-2 border-zinc-900 bg-white px-3 text-zinc-800 hover:bg-orange-100'
+          className='h-9 border-2 border-zinc-900 bg-white px-3 text-zinc-800 hover:bg-rose-100'
         >
           <HugeiconsIcon size={16} icon={ArrowLeft01Icon} />
           <span className='ml-1 hidden sm:inline'>Previous</span>
         </Button>
         <div className='flex h-9 items-center gap-1.5 rounded-xl border-2 border-zinc-900 bg-white px-3 text-sm'>
           <span className='text-zinc-600'>Page</span>
-          <span className='font-bold text-orange-600'>{currentPage}</span>
+          <span className='font-bold text-rose-600'>{currentPage}</span>
           <span className='text-zinc-400'>/</span>
           <span className='font-medium text-zinc-800'>{totalPages}</span>
         </div>
@@ -87,7 +87,7 @@ export function TablePagination({
           variant='archived'
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className='h-9 border-2 border-zinc-900 bg-white px-3 text-zinc-800 hover:bg-orange-100'
+          className='h-9 border-2 border-zinc-900 bg-white px-3 text-zinc-800 hover:bg-rose-100'
         >
           <span className='mr-1 hidden sm:inline'>Next</span>
           <HugeiconsIcon size={16} icon={ArrowRight01Icon} />

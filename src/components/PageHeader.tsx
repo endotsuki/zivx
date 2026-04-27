@@ -34,7 +34,7 @@ export function PageHeader() {
       <div className='flex items-center'>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='select-none border-2 border-zinc-900 bg-white text-zinc-900 hover:bg-orange-100'>
+            <Button variant='outline' className='select-none border-2 border-zinc-900 bg-white text-zinc-900 hover:bg-rose-100'>
               <HugeiconsIcon icon={Clapping02Icon} size={23} />
               Supported Services
             </Button>
@@ -46,7 +46,7 @@ export function PageHeader() {
               {supportedPlatforms.map((platform) => (
                 <div
                   key={platform.name}
-                  className='flex cursor-pointer flex-col items-center gap-1 rounded-xl p-2 transition-colors hover:bg-orange-100'
+                  className='flex cursor-pointer flex-col items-center gap-1 rounded-xl p-2 transition-colors hover:bg-rose-100'
                 >
                   <Icon name={platform.icon} className='h-6 w-6 text-zinc-700' />
                   <span className='text-xs text-zinc-700'>{platform.name}</span>

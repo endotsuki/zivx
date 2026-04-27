@@ -9,7 +9,7 @@ export function StatsCards({ total, completed, downloading, queued }: StatsCards
     { label: 'Total', value: total, color: 'text-zinc-900', border: 'border-zinc-900', bg: 'bg-white' },
     { label: 'Completed', value: completed, color: 'text-emerald-700', border: 'border-emerald-600', bg: 'bg-emerald-50' },
     { label: 'Downloading', value: downloading, color: 'text-blue-700', border: 'border-blue-600', bg: 'bg-blue-50' },
-    { label: 'Queued', value: queued, color: 'text-orange-700', border: 'border-orange-500', bg: 'bg-orange-50' },
+    { label: 'Queued', value: queued, color: 'text-yellow-700', border: 'border-yellow-500', bg: 'bg-yellow-50' },
     {
       label: 'Failed',
       value: total - completed - downloading - queued,

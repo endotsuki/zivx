@@ -169,7 +169,6 @@ export default function VideoDownloader() {
               <p className='text-xs font-semibold uppercase tracking-widest text-zinc-600'>Quick Add</p>
               <h2 className='text-lg font-black text-zinc-900 sm:text-xl'>Paste links and start downloading</h2>
             </div>
-            <p className='text-xs text-zinc-600'>Tip: Press Enter to submit quickly</p>
           </div>
           <DownloadControls
             videoLink={videoLink}

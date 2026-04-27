@@ -21,9 +21,9 @@ export function StatusBadge({ status }: StatusBadgeProps) {
     switch (statusLower) {
       case 'queued':
         return {
-          bg: 'bg-orange-50',
-          text: 'text-orange-700',
-          border: 'border-orange-300',
+          bg: 'bg-yellow-50',
+          text: 'text-yellow-700',
+          border: 'border-yellow-300',
           icon: HourglassIcon,
         };
       case 'starting':
@@ -80,7 +80,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
       className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium ${style.bg} ${style.text} ${style.border}`}
     >
       {isDownloading ? (
-        <div className='h-4 w-4 animate-spin rounded-full border-2 border-orange-300 border-t-orange-600'></div>
+        <div className='h-4 w-4 animate-spin rounded-full border-2 border-yellow-300 border-t-yellow-600'></div>
       ) : (
         <HugeiconsIcon icon={style.icon} size={16} />
       )}

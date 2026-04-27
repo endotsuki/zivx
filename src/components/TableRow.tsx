@@ -85,7 +85,7 @@ export function TableRow({ item }: TableRowProps) {
       <div className='relative h-24 w-24 shrink-0 overflow-hidden rounded-xl border-2 border-zinc-900/80 bg-zinc-100'>
         {thumbnailLoading ? (
           <div className='flex h-full w-full items-center justify-center'>
-            <div className='h-8 w-8 animate-spin rounded-full border-2 border-zinc-400 border-t-orange-500' />
+            <div className='h-8 w-8 animate-spin rounded-full border-2 border-zinc-400 border-t-rose-500' />
           </div>
         ) : thumbnailError || !thumbnail ? (
           <div className='flex h-full w-full items-center justify-center bg-zinc-100'>
@@ -119,7 +119,7 @@ export function TableRow({ item }: TableRowProps) {
             href={item.url}
             target='_blank'
             rel='noopener noreferrer'
-            className='line-clamp-2 block text-xs font-semibold text-zinc-900 transition-colors hover:text-orange-600 hover:underline sm:text-sm'
+            className='line-clamp-2 block text-xs font-semibold text-zinc-900 transition-colors hover:text-rose-600 hover:underline sm:text-sm'
             title={title ?? undefined}
             aria-label={title || item.url}
           >
