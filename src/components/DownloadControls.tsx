@@ -87,7 +87,7 @@ export function DownloadControls({
             )}
             <span className='relative z-10 flex items-center gap-1.5'>
               <HugeiconsIcon icon={tab === 'video' ? Video01Icon : MusicNote03Icon} size={16} />
-              {tab === 'video' ? 'Video' : 'Audio (MP3)'}
+              {tab === 'video' ? 'MP4' : 'MP3'}
             </span>
           </motion.button>
         ))}
@@ -124,7 +124,7 @@ export function DownloadControls({
             }`}
           >
             <HugeiconsIcon icon={isAudio ? MusicNote03Icon : Download01Icon} size={20} />
-            {isAudio ? 'Extract MP3' : 'Download'}
+            {isAudio ? 'Extract MP3' : 'Download MP4'}
           </Button>
         </div>
 
