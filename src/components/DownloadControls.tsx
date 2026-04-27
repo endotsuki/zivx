@@ -87,9 +87,7 @@ export function DownloadControls({
 
       {/* ── URL Input + Action Button ── */}
       <div>
-        <label className='mb-1.5 block text-xs font-semibold uppercase tracking-wider text-zinc-700'>
-          {isAudio ? 'Audio URL' : 'Single URL'}
-        </label>
+        <label className='mb-1.5 block font-black uppercase tracking-wider'>{isAudio ? 'Audio URL' : 'Single URL'}</label>
         <div className='relative flex flex-col gap-2 sm:flex-row sm:items-stretch sm:gap-3'>
           <div className='relative flex-1'>
             <input
@@ -125,8 +123,8 @@ export function DownloadControls({
       <div className='grid gap-3 border-t-2 border-zinc-900/20 pt-5 lg:grid-cols-2'>
         <div className='space-y-2 rounded-2xl border-2 border-zinc-900 bg-zinc-50 p-3'>
           <div>
-            <p className='text-xs font-semibold uppercase tracking-wider text-zinc-700'>Save Location</p>
-            <p className='text-xs text-zinc-500'>Choose where completed files are saved.</p>
+            <p className='text-sm font-black uppercase tracking-wider text-zinc-700'>Save Location</p>
+            <p className='text-sm text-zinc-500'>Choose where completed files are saved.</p>
           </div>
           <div className='flex min-w-0 flex-col gap-2 sm:flex-row'>
             <motion.button
@@ -181,15 +179,15 @@ export function DownloadControls({
 
         <div className='space-y-2 rounded-2xl border-2 border-zinc-900 bg-zinc-50 p-3'>
           <div>
-            <p className='text-xs font-semibold uppercase tracking-wider text-zinc-700'>Batch Upload</p>
-            <p className='text-xs text-zinc-500'>Upload a `.txt` file with one link per line.</p>
+            <p className='text-sm font-black uppercase tracking-wider text-zinc-700'>Batch Upload</p>
+            <p className='text-sm text-zinc-500'>Upload a `.txt` file with many links.</p>
           </div>
           <div className='flex items-center'>
             <input ref={fileInputRef} type='file' accept='.txt' className='hidden' id='batch-file' onChange={uploadList} />
             <Button variant='archived' className='h-[46px] w-full rounded-2xl px-4'>
               <label htmlFor='batch-file' className='inline-flex w-full cursor-pointer items-center justify-center gap-2'>
                 <HugeiconsIcon icon={CloudDownloadIcon} size={20} />
-                Download batch links (.txt)
+                Batch links (.txt)
               </label>
             </Button>
           </div>

@@ -1,7 +1,7 @@
 import { Icon } from 'iconza';
 import { Button } from '../ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { Clapping02Icon } from '@hugeicons/core-free-icons';
+import { HelpCircleIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 
 const supportedPlatforms = [
@@ -23,24 +23,24 @@ const supportedPlatforms = [
 export function PageHeader() {
   return (
     <div className='mb-6 flex flex-wrap items-center justify-between gap-4'>
-      <div className='flex items-center gap-3'>
+      <div className='flex items-center gap-1'>
         <img src='/logo.png' alt='Logo' className='h-11 w-11' />
-        <div>
-          <h1 className='text-3xl font-black tracking-tight text-zinc-900'>Dovio</h1>
-          <p className='text-xs font-semibold uppercase tracking-wider text-zinc-600'>Playful video downloader</p>
-        </div>
+        <h1 className='text-3xl font-black tracking-tight text-zinc-900'>Dovio</h1>
       </div>
 
       <div className='flex items-center'>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='select-none border-2 border-zinc-900 bg-white text-zinc-900 hover:bg-rose-100'>
-              <HugeiconsIcon icon={Clapping02Icon} size={23} />
+            <Button
+              variant='outline'
+              className='select-none border-2 border-zinc-900 bg-white text-base font-bold text-zinc-900 hover:bg-rose-100'
+            >
               Supported Services
+              <HugeiconsIcon icon={HelpCircleIcon} size={23} />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className='w-80 border-2 border-zinc-900 bg-[#fffdfa]'>
-            <DropdownMenuLabel className='text-zinc-800'>Supported Platforms</DropdownMenuLabel>
+          <DropdownMenuContent className='w-80 border-2 border-zinc-900 bg-white/50 p-2 backdrop-blur-lg'>
+            <DropdownMenuLabel className='text-xs font-bold text-zinc-800'>Supported Platforms</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <div className='grid grid-cols-4 gap-2 p-2'>
               {supportedPlatforms.map((platform) => (
@@ -49,7 +49,7 @@ export function PageHeader() {
                   className='flex cursor-pointer flex-col items-center gap-1 rounded-xl p-2 transition-colors hover:bg-rose-100'
                 >
                   <Icon name={platform.icon} className='h-6 w-6 text-zinc-700' />
-                  <span className='text-xs text-zinc-700'>{platform.name}</span>
+                  <span className='text-sm font-black text-zinc-700'>{platform.name}</span>
                 </div>
               ))}
             </div>
