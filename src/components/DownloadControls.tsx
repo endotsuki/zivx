@@ -1,15 +1,7 @@
 import { type RefObject } from 'react';
 import { Button } from '../ui/button';
 import { HugeiconsIcon } from '@hugeicons/react';
-import {
-  Delete01Icon,
-  Download01Icon,
-  Download05Icon,
-  Folder01Icon,
-  Task02Icon,
-  MusicNote03Icon,
-  Video01Icon,
-} from '@hugeicons/core-free-icons';
+import { Delete01Icon, Download05Icon, Folder01Icon, Task02Icon, MusicNote03Icon, VideoAiIcon } from '@hugeicons/core-free-icons';
 import { AnimatePresence, motion } from 'framer-motion';
 
 interface DownloadControlsProps {
@@ -86,7 +78,7 @@ export function DownloadControls({
               />
             )}
             <span className='relative z-10 flex items-center gap-1.5'>
-              <HugeiconsIcon icon={tab === 'video' ? Video01Icon : MusicNote03Icon} size={16} />
+              <HugeiconsIcon icon={tab === 'video' ? VideoAiIcon : MusicNote03Icon} size={16} />
               {tab === 'video' ? 'MP4' : 'MP3'}
             </span>
           </motion.button>
@@ -123,7 +115,7 @@ export function DownloadControls({
               isAudio ? 'bg-violet-600 hover:bg-violet-700' : 'bg-orange-500 hover:bg-orange-600'
             }`}
           >
-            <HugeiconsIcon icon={isAudio ? MusicNote03Icon : Download01Icon} size={20} />
+            <HugeiconsIcon icon={isAudio ? MusicNote03Icon : VideoAiIcon} size={20} />
             {isAudio ? 'Extract MP3' : 'Download MP4'}
           </Button>
         </div>
