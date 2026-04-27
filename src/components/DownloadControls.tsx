@@ -1,7 +1,7 @@
 import { type RefObject } from 'react';
 import { Button } from '../ui/button';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Delete01Icon, Download05Icon, Folder01Icon, Task02Icon, MusicNote03Icon, VideoAiIcon } from '@hugeicons/core-free-icons';
+import { Delete01Icon, CloudDownloadIcon, Folder01Icon, Task02Icon, MusicNote03Icon, VideoAiIcon } from '@hugeicons/core-free-icons';
 import { AnimatePresence, motion } from 'framer-motion';
 
 interface DownloadControlsProps {
@@ -122,12 +122,13 @@ export function DownloadControls({
       </div>
 
       {/* ── Save Folder + Batch Upload ── */}
-      <div className='flex flex-col gap-4 border-t-2 border-zinc-900/20 pt-5 sm:flex-row sm:items-center'>
-        <motion.div layout className='flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:gap-3'>
-          <span className='shrink-0 text-xs font-semibold uppercase tracking-wider text-zinc-700'>Save to</span>
-
-          <motion.div layout className='flex min-w-0 flex-1 flex-col gap-2 sm:flex-row'>
-            {/* Directory picker */}
+      <div className='grid gap-3 border-t-2 border-zinc-900/20 pt-5 lg:grid-cols-2'>
+        <div className='space-y-2 rounded-2xl border-2 border-zinc-900 bg-zinc-50 p-3'>
+          <div>
+            <p className='text-xs font-semibold uppercase tracking-wider text-zinc-700'>Save Location</p>
+            <p className='text-xs text-zinc-500'>Choose where completed files are saved.</p>
+          </div>
+          <div className='flex min-w-0 flex-col gap-2 sm:flex-row'>
             <motion.button
               layout
               type='button'
@@ -160,7 +161,6 @@ export function DownloadControls({
               </AnimatePresence>
             </motion.button>
 
-            {/* Clear directory */}
             <AnimatePresence>
               {selectedDirectory && (
                 <motion.button
@@ -169,27 +169,30 @@ export function DownloadControls({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   onClick={() => setSelectedDirectory(null)}
-                  className='flex h-[46px] items-center gap-1 rounded-xl border-2 border-zinc-900 bg-white px-3 text-zinc-600 transition-colors hover:bg-rose-50 hover:text-red-500'
+                  className='flex h-[46px] items-center justify-center gap-1 rounded-xl border-2 border-zinc-900 bg-white px-3 text-zinc-600 transition-colors hover:bg-rose-50 hover:text-red-500 sm:min-w-[96px]'
                 >
                   <HugeiconsIcon icon={Delete01Icon} size={20} />
                   Clear
                 </motion.button>
               )}
             </AnimatePresence>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
-        <div className='hidden h-8 w-px shrink-0 bg-zinc-300 sm:block' />
-
-        {/* Batch .txt upload */}
-        <div className='flex flex-wrap items-center gap-2'>
-          <input ref={fileInputRef} type='file' accept='.txt' className='hidden' id='batch-file' onChange={uploadList} />
-          <Button variant='archived' className='h-[46px] rounded-2xl px-4'>
-            <label htmlFor='batch-file' className='inline-flex cursor-pointer items-center justify-center gap-2'>
-              <HugeiconsIcon icon={Download05Icon} size={20} />
-              Batch link .txt
-            </label>
-          </Button>
+        <div className='space-y-2 rounded-2xl border-2 border-zinc-900 bg-zinc-50 p-3'>
+          <div>
+            <p className='text-xs font-semibold uppercase tracking-wider text-zinc-700'>Batch Upload</p>
+            <p className='text-xs text-zinc-500'>Upload a `.txt` file with one link per line.</p>
+          </div>
+          <div className='flex items-center'>
+            <input ref={fileInputRef} type='file' accept='.txt' className='hidden' id='batch-file' onChange={uploadList} />
+            <Button variant='archived' className='h-[46px] w-full rounded-2xl px-4'>
+              <label htmlFor='batch-file' className='inline-flex w-full cursor-pointer items-center justify-center gap-2'>
+                <HugeiconsIcon icon={CloudDownloadIcon} size={20} />
+                Download batch links (.txt)
+              </label>
+            </Button>
+          </div>
         </div>
       </div>
     </div>
