@@ -1,5 +1,5 @@
 import { Icon } from 'iconza';
-import type { DownloadItem } from './App';
+import { API_BASE_URL, type DownloadItem } from './App';
 import { StatusBadge } from './StatusBadge';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ProgressBar } from './Progressbar';
@@ -16,18 +16,17 @@ export function TableRow({ item }: TableRowProps) {
   const [title, setTitle] = useState<string>('');
   const [thumbnailLoading, setThumbnailLoading] = useState(false);
   const [thumbnailError, setThumbnailError] = useState(false);
-  const fetchedUrls = useRef(new Set<string>()); // Track fetched URLs to prevent reloading
+  const fetchedUrls = useRef(new Set<string>());
 
   const fetchThumbnail = async (url: string) => {
-    if (fetchedUrls.current.has(url)) {
-      return;
-    }
+    if (fetchedUrls.current.has(url)) return;
 
     setThumbnailLoading(true);
     setThumbnailError(false);
 
     try {
-      const response = await fetch('https://handsome-susana-laxa-6d48f7a6.koyeb.app/api/thumbnail', {
+      // ✅ Uses the same backend as the rest of the app — no more hardcoded koyeb URL
+      const response = await fetch(`${API_BASE_URL}/api/thumbnail`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url }),
@@ -38,7 +37,7 @@ export function TableRow({ item }: TableRowProps) {
         if (data.thumbnail) {
           setThumbnail(data.thumbnail);
           setTitle(data.title || '');
-          fetchedUrls.current.add(url); // Mark as fetched
+          fetchedUrls.current.add(url);
           setThumbnailLoading(false);
           return;
         }
@@ -70,14 +69,23 @@ export function TableRow({ item }: TableRowProps) {
     return '';
   };
 
+  // Show format badge (MP3 / ZIP / MP4)
+  const getFormatBadge = () => {
+    if (item.format === 'audio') return { label: 'MP3', color: 'bg-violet-100 text-violet-700 border-violet-300' };
+    if (item.filename?.endsWith('.zip')) return { label: 'Images ZIP', color: 'bg-blue-100 text-blue-700 border-blue-300' };
+    return null;
+  };
+
+  const formatBadge = getFormatBadge();
   const platformIcon = getPlatformIcon(item.url);
 
   return (
     <div className='group relative flex items-center gap-3 rounded-2xl border-2 border-zinc-900/90 bg-[#fffdfa] p-3 transition-all hover:-translate-y-0.5'>
-      <div className='relative h-24 w-24 overflow-hidden rounded-xl border-2 border-zinc-900/80 bg-zinc-100'>
+      {/* Thumbnail */}
+      <div className='relative h-24 w-24 shrink-0 overflow-hidden rounded-xl border-2 border-zinc-900/80 bg-zinc-100'>
         {thumbnailLoading ? (
           <div className='flex h-full w-full items-center justify-center'>
-            <div className='h-8 w-8 animate-spin rounded-full border-2 border-zinc-400 border-t-orange-500'></div>
+            <div className='h-8 w-8 animate-spin rounded-full border-2 border-zinc-400 border-t-orange-500' />
           </div>
         ) : thumbnailError || !thumbnail ? (
           <div className='flex h-full w-full items-center justify-center bg-zinc-100'>
@@ -94,7 +102,7 @@ export function TableRow({ item }: TableRowProps) {
           <img src={thumbnail} alt='Thumbnail' className='h-full w-full object-cover' onError={() => setThumbnailError(true)} />
         )}
 
-        {/* Platform Icon Overlay */}
+        {/* Platform icon overlay */}
         <div className='absolute left-1.5 top-1.5 flex h-5 w-5 items-center justify-center'>
           {platformIcon.type === 'iconza' ? (
             <Icon name={platformIcon.name} size={23} className='text-white drop-shadow-lg' />
@@ -103,8 +111,10 @@ export function TableRow({ item }: TableRowProps) {
           )}
         </div>
       </div>
+
+      {/* Content */}
       <div className='min-w-0 flex-1'>
-        <div className='mb-2'>
+        <div className='mb-1.5 flex items-start justify-between gap-2'>
           <a
             href={item.url}
             target='_blank'
@@ -115,18 +125,24 @@ export function TableRow({ item }: TableRowProps) {
           >
             {title || item.url}
           </a>
+          {/* Format badge */}
+          {formatBadge && (
+            <span className={`shrink-0 rounded-lg border px-1.5 py-0.5 text-[10px] font-bold ${formatBadge.color}`}>
+              {formatBadge.label}
+            </span>
+          )}
         </div>
+
         <div className='mb-2'>
           <ProgressBar progress={item.progress ?? 0} />
         </div>
+
         <div className='flex items-center justify-between text-xs text-zinc-600'>
           <div className='flex items-center gap-3'>
             <StatusBadge status={item.status} />
             <span>{getDownloadSpeed()}</span>
           </div>
-          <div className='flex items-center justify-between text-xs text-zinc-600'>
-            <span>{item.progress?.toFixed(1) || '0.0'}%</span>
-          </div>
+          <span>{item.progress?.toFixed(1) || '0.0'}%</span>
         </div>
       </div>
     </div>

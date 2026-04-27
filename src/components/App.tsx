@@ -4,7 +4,10 @@ import { DownloadControls } from './DownloadControls';
 import { StatsCards } from './StatusCards';
 import { DownloadTable } from './DownloadTable';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+// Export so TableRow and other components can import the same base URL
+// .replace strips the trailing slash from .env values like "https://example.com/"
+const RAW_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+export const API_BASE_URL = RAW_API_URL.replace(/\/$/, '');
 
 export interface DownloadItem {
   id: number;
@@ -16,6 +19,7 @@ export interface DownloadItem {
   filepath?: string;
   size?: string;
   duration?: string;
+  format?: string;
 }
 
 export interface StatsData {
@@ -26,6 +30,8 @@ export interface StatsData {
 }
 
 export default function VideoDownloader() {
+  // ✅ ALL hooks are inside the component function
+  const [activeTab, setActiveTab] = useState<'video' | 'audio'>('video');
   const [videoLink, setVideoLink] = useState('');
   const [selectedDirectory, setSelectedDirectory] = useState<FileSystemDirectoryHandle | null>(null);
   const [stats, setStats] = useState<StatsData>({
@@ -41,39 +47,31 @@ export default function VideoDownloader() {
 
   useEffect(() => {
     fetchStatus();
-    const interval = setInterval(fetchStatus, 1000);
+    const interval = setInterval(fetchStatus, 2000);
     return () => clearInterval(interval);
   }, []);
 
-  // Auto-download when items become completed
+  // Auto-trigger browser download when an item reaches Completed
   useEffect(() => {
     stats.queue.forEach(async (item) => {
       if (item.status === 'Completed' && item.filename && !downloadedItemsRef.current.has(item.id)) {
         downloadedItemsRef.current.add(item.id);
 
-        // If user selected a directory, write directly to it
         if (selectedDirectory) {
           try {
-            // Fetch the file from server
             const response = await fetch(`${API_BASE_URL}/download/${item.id}`);
             if (!response.ok) throw new Error('Failed to fetch file');
-
             const blob = await response.blob();
-
-            // Write to selected directory using File System Access API
             const fileHandle = await selectedDirectory.getFileHandle(item.filename, { create: true });
             const writable = await fileHandle.createWritable();
             await writable.write(blob);
             await writable.close();
-
-            console.log(`✓ Saved to selected folder: ${item.filename}`);
+            console.log(`✓ Saved to folder: ${item.filename}`);
           } catch (error) {
-            console.error('Error saving to selected directory:', error);
-            // Fallback to browser download
+            console.error('Directory save failed, falling back to browser download:', error);
             triggerBrowserDownload(item.id, item.filename);
           }
         } else {
-          // No directory selected, use browser download
           triggerBrowserDownload(item.id, item.filename);
         }
       }
@@ -81,9 +79,8 @@ export default function VideoDownloader() {
   }, [stats.queue, selectedDirectory]);
 
   const triggerBrowserDownload = (itemId: number, filename: string) => {
-    const downloadUrl = `${API_BASE_URL}/download/${itemId}`;
     const link = document.createElement('a');
-    link.href = downloadUrl;
+    link.href = `${API_BASE_URL}/download/${itemId}`;
     link.download = filename;
     link.style.display = 'none';
     document.body.appendChild(link);
@@ -94,6 +91,7 @@ export default function VideoDownloader() {
   const fetchStatus = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/status`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       setStats(data);
     } catch (error) {
@@ -107,15 +105,13 @@ export default function VideoDownloader() {
       alert('Please enter a link');
       return;
     }
-
     try {
       const response = await fetch(`${API_BASE_URL}/queue`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ urls: [link] }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls: [link], format: activeTab }),
       });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       setStats(data);
       setVideoLink('');
@@ -130,20 +126,18 @@ export default function VideoDownloader() {
       alert('Choose .txt file');
       return;
     }
-
     const formData = new FormData();
     formData.append('file', file);
-
+    formData.append('format', activeTab);
     try {
       const response = await fetch(`${API_BASE_URL}/upload`, {
         method: 'POST',
         body: formData,
       });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       setStats(data);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
+      if (fileInputRef.current) fileInputRef.current.value = '';
     } catch (error) {
       console.error('Failed to upload file:', error);
     }
@@ -151,12 +145,11 @@ export default function VideoDownloader() {
 
   const clearDownloads = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/clear`, {
-        method: 'POST',
-      });
+      const response = await fetch(`${API_BASE_URL}/clear`, { method: 'POST' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       setStats(data);
-      setCurrentPage(1); // Reset to first page after clearing
+      setCurrentPage(1);
     } catch (error) {
       console.error('Failed to clear downloads:', error);
     }
@@ -186,6 +179,8 @@ export default function VideoDownloader() {
             queueSingle={queueSingle}
             uploadList={uploadList}
             fileInputRef={fileInputRef}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
           />
         </div>
 
