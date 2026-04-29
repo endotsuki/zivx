@@ -1,63 +1,13 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { PageHeader } from './PageHeader';
 import { DownloadControls } from './DownloadControls';
 import { StatsCards } from './StatusCards';
 import { DownloadTable } from './DownloadTable';
 
+// Export so TableRow and other components can import the same base URL
+// .replace strips the trailing slash from .env values like "https://example.com/"
 const RAW_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 export const API_BASE_URL = RAW_API_URL.replace(/\/$/, '');
-
-// ---------------------------------------------------------------------------
-// Session ID — created once per browser, persisted in localStorage
-// This isolates each user's queue from everyone else's
-// ---------------------------------------------------------------------------
-function getSessionId(): string {
-  const key = 'vd_session_id';
-  let id = localStorage.getItem(key);
-  if (!id) {
-    id = crypto.randomUUID();
-    localStorage.setItem(key, id);
-  }
-  return id;
-}
-
-export const SESSION_ID = getSessionId();
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-// IDs of items already auto-downloaded — persisted so page reloads don't re-trigger
-function getDownloadedIds(): Set<number> {
-  try {
-    const raw = localStorage.getItem('vd_downloaded_ids');
-    return raw ? new Set(JSON.parse(raw) as number[]) : new Set();
-  } catch {
-    return new Set();
-  }
-}
-
-function saveDownloadedId(id: number) {
-  const ids = getDownloadedIds();
-  ids.add(id);
-  // Keep only last 200 to prevent unbounded growth
-  const arr = [...ids].slice(-200);
-  localStorage.setItem('vd_downloaded_ids', JSON.stringify(arr));
-}
-
-export function apiFetch(path: string, init?: RequestInit) {
-  return fetch(`${API_BASE_URL}${path}`, {
-    ...init,
-    headers: {
-      ...(init?.headers ?? {}),
-      'X-Session-ID': SESSION_ID,
-    },
-  });
-}
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
 
 export interface DownloadItem {
   id: number;
@@ -67,6 +17,8 @@ export interface DownloadItem {
   error?: string;
   filename?: string;
   filepath?: string;
+  size?: string;
+  duration?: string;
   format?: string;
 }
 
@@ -77,145 +29,129 @@ export interface StatsData {
   queue: DownloadItem[];
 }
 
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
-
-export default function App() {
+export default function VideoDownloader() {
+  // ✅ ALL hooks are inside the component function
   const [activeTab, setActiveTab] = useState<'video' | 'audio'>('video');
   const [videoLink, setVideoLink] = useState('');
   const [selectedDirectory, setSelectedDirectory] = useState<FileSystemDirectoryHandle | null>(null);
-  const [stats, setStats] = useState<StatsData>({ total: 0, completed: 0, downloading: 0, queue: [] });
+  const [stats, setStats] = useState<StatsData>({
+    total: 0,
+    completed: 0,
+    downloading: 0,
+    queue: [],
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // ---------------------------------------------------------------------------
-  // Fetch status on mount + poll every 2s
-  // ---------------------------------------------------------------------------
-  const fetchStatus = useCallback(async () => {
-    try {
-      const res = await apiFetch('/api/status');
-      if (!res.ok) return;
-      setStats(await res.json());
-    } catch {
-      /* network error, ignore */
-    }
-  }, []);
+  const downloadedItemsRef = useRef<Set<number>>(new Set());
 
   useEffect(() => {
     fetchStatus();
-    const t = setInterval(fetchStatus, 2000);
-    return () => clearInterval(t);
-  }, [fetchStatus]);
+    const interval = setInterval(fetchStatus, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
-  // ---------------------------------------------------------------------------
-  // Auto-download completed items to browser — persisted across reloads
-  // ---------------------------------------------------------------------------
+  // Auto-trigger browser download when an item reaches Completed
   useEffect(() => {
     stats.queue.forEach(async (item) => {
-      if (item.status !== 'Completed' || !item.filename) return;
-      if (getDownloadedIds().has(item.id)) return; // already downloaded this session or before
+      if (item.status === 'Completed' && item.filename && !downloadedItemsRef.current.has(item.id)) {
+        downloadedItemsRef.current.add(item.id);
 
-      saveDownloadedId(item.id); // mark immediately to prevent double-trigger
-
-      if (selectedDirectory) {
-        try {
-          const res = await apiFetch(`/api/download/${item.id}`);
-          if (!res.ok) throw new Error('fetch failed');
-          const blob = await res.blob();
-          const fh = await selectedDirectory.getFileHandle(item.filename, { create: true });
-          const w = await fh.createWritable();
-          await w.write(blob);
-          await w.close();
-          return;
-        } catch {
-          // fall through to browser download
+        if (selectedDirectory) {
+          try {
+            const response = await fetch(`${API_BASE_URL}/download/${item.id}`);
+            if (!response.ok) throw new Error('Failed to fetch file');
+            const blob = await response.blob();
+            const fileHandle = await selectedDirectory.getFileHandle(item.filename, { create: true });
+            const writable = await fileHandle.createWritable();
+            await writable.write(blob);
+            await writable.close();
+            console.log(`✓ Saved to folder: ${item.filename}`);
+          } catch (error) {
+            console.error('Directory save failed, falling back to browser download:', error);
+            triggerBrowserDownload(item.id, item.filename);
+          }
+        } else {
+          triggerBrowserDownload(item.id, item.filename);
         }
-      }
-
-      // Browser download via hidden <a>
-      const a = document.createElement('a');
-      a.href = `${API_BASE_URL}/api/download/${item.id}`;
-      a.download = item.filename;
-      a.style.display = 'none';
-      // Add session header isn't possible on <a> tags, so use fetch + blob URL instead
-      try {
-        const res = await apiFetch(`/api/download/${item.id}`);
-        if (!res.ok) throw new Error('fetch failed');
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-        a.href = url;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(() => URL.revokeObjectURL(url), 10000);
-      } catch {
-        // last-resort fallback without session header
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
       }
     });
   }, [stats.queue, selectedDirectory]);
 
-  // ---------------------------------------------------------------------------
-  // Actions
-  // ---------------------------------------------------------------------------
+  const triggerBrowserDownload = (itemId: number, filename: string) => {
+    const link = document.createElement('a');
+    link.href = `${API_BASE_URL}/download/${itemId}`;
+    link.download = filename;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const fetchStatus = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/status`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      setStats(data);
+    } catch (error) {
+      console.error('Failed to fetch status:', error);
+    }
+  };
 
   const queueSingle = async () => {
     const link = videoLink.trim();
-    if (!link) return alert('Please enter a link');
+    if (!link) {
+      alert('Please enter a link');
+      return;
+    }
     try {
-      const res = await apiFetch('/api/queue', {
+      const response = await fetch(`${API_BASE_URL}/queue`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ urls: [link], format: activeTab }),
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      setStats(await res.json());
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      setStats(data);
       setVideoLink('');
-    } catch (e) {
-      console.error('Queue failed:', e);
+    } catch (error) {
+      console.error('Failed to queue download:', error);
     }
   };
 
   const uploadList = async () => {
     const file = fileInputRef.current?.files?.[0];
-    if (!file) return alert('Choose a .txt file');
-    const fd = new FormData();
-    fd.append('file', file);
-    fd.append('format', activeTab);
-    try {
-      const res = await apiFetch('/api/upload', { method: 'POST', body: fd });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      setStats(await res.json());
-      if (fileInputRef.current) fileInputRef.current.value = '';
-    } catch (e) {
-      console.error('Upload failed:', e);
+    if (!file) {
+      alert('Choose .txt file');
+      return;
     }
-  };
-
-  const cancelItem = async (itemId: number) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('format', activeTab);
     try {
-      const res = await apiFetch(`/api/cancel/${itemId}`, { method: 'POST' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      setStats(await res.json());
-    } catch (e) {
-      console.error('Cancel failed:', e);
+      const response = await fetch(`${API_BASE_URL}/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      setStats(data);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    } catch (error) {
+      console.error('Failed to upload file:', error);
     }
   };
 
   const clearDownloads = async () => {
     try {
-      const res = await apiFetch('/api/clear', { method: 'POST' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      setStats(await res.json());
+      const response = await fetch(`${API_BASE_URL}/clear`, { method: 'POST' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      setStats(data);
       setCurrentPage(1);
-      // Clear persisted download IDs when user explicitly clears queue
-      localStorage.removeItem('vd_downloaded_ids');
-    } catch (e) {
-      console.error('Clear failed:', e);
+    } catch (error) {
+      console.error('Failed to clear downloads:', error);
     }
   };
 
@@ -233,7 +169,6 @@ export default function App() {
               <p className='text-xs font-semibold uppercase tracking-widest text-zinc-600'>Quick Add</p>
               <h2 className='text-lg font-black text-zinc-900 sm:text-xl'>Paste links and start downloading</h2>
             </div>
-            <p className='text-xs text-zinc-600'>Tip: Press Enter to submit quickly</p>
           </div>
           <DownloadControls
             videoLink={videoLink}
@@ -248,7 +183,9 @@ export default function App() {
           />
         </div>
 
-        <StatsCards total={stats.total} completed={stats.completed} downloading={stats.downloading} queued={queuedCount} />
+        <div>
+          <StatsCards total={stats.total} completed={stats.completed} downloading={stats.downloading} queued={queuedCount} />
+        </div>
 
         <div className='rounded-[28px] border-[3px] border-zinc-900 bg-[#fffdfa] p-4 shadow-[8px_8px_0_0_#111827] sm:p-6'>
           <div className='mb-4 border-b-2 border-zinc-900/10 pb-3'>
@@ -262,7 +199,6 @@ export default function App() {
             setCurrentPage={setCurrentPage}
             clearDownloads={clearDownloads}
             setRowsPerPage={setRowsPerPage}
-            cancelItem={cancelItem}
           />
         </div>
       </div>
