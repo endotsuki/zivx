@@ -1,95 +1,65 @@
 import { Icon } from 'iconza';
-import { API_BASE_URL, type DownloadItem } from './App';
+import { apiFetch, type DownloadItem } from './App';
 import { StatusBadge } from './StatusBadge';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { Cancel01Icon } from '@hugeicons/core-free-icons';
 import { ProgressBar } from './Progressbar';
 import { useState, useEffect, useRef } from 'react';
 import { getPlatformIcon } from './PlatformIcon';
 
 interface TableRowProps {
   item: DownloadItem;
-  index: number;
+  onCancel: (id: number) => void;
 }
 
-export function TableRow({ item }: TableRowProps) {
-  const [thumbnail, setThumbnail] = useState<string>('');
-  const [title, setTitle] = useState<string>('');
-  const [thumbnailLoading, setThumbnailLoading] = useState(false);
-  const [thumbnailError, setThumbnailError] = useState(false);
-  const fetchedUrls = useRef(new Set<string>());
+const CANCELLABLE = new Set(['Queued', 'Starting', 'Downloading', 'Merging', 'Converting']);
 
-  const fetchThumbnail = async (url: string) => {
-    if (fetchedUrls.current.has(url)) return;
+export function TableRow({ item, onCancel }: TableRowProps) {
+  const [thumbnail, setThumbnail] = useState('');
+  const [title, setTitle] = useState('');
+  const [thumbState, setThumbState] = useState<'loading' | 'ok' | 'error'>('loading');
+  const fetchedRef = useRef(new Set<string>());
 
-    setThumbnailLoading(true);
-    setThumbnailError(false);
+  useEffect(() => {
+    if (fetchedRef.current.has(item.url)) return;
+    fetchedRef.current.add(item.url);
+    setThumbState('loading');
 
-    try {
-      // ✅ Uses the same backend as the rest of the app — no more hardcoded koyeb URL
-      const response = await fetch(`${API_BASE_URL}/api/thumbnail`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
+    apiFetch('/api/thumbnail', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: item.url }),
+    })
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data) => {
         if (data.thumbnail) {
           setThumbnail(data.thumbnail);
           setTitle(data.title || '');
-          fetchedUrls.current.add(url);
-          setThumbnailLoading(false);
-          return;
+          setThumbState('ok');
+        } else {
+          setThumbState('error');
         }
-      }
-
-      setThumbnailError(true);
-      setThumbnailLoading(false);
-    } catch (error) {
-      console.error('Failed to fetch thumbnail:', error);
-      setThumbnailError(true);
-      setThumbnailLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (!fetchedUrls.current.has(item.url)) {
-      fetchThumbnail(item.url);
-    }
+      })
+      .catch(() => setThumbState('error'));
   }, [item.url]);
 
-  const getDownloadSpeed = () => {
-    if (item.status === 'Downloading') {
-      const speed = ((item.id % 15) / 10 + 0.5).toFixed(1);
-      return `${speed}MB/S`;
-    }
-    if (item.status === 'Queued' || item.status === 'Starting') {
-      return 'Waiting...';
-    }
-    return '';
-  };
-
-  // Show format badge (MP3 / ZIP / MP4)
-  const getFormatBadge = () => {
-    if (item.format === 'audio') return { label: 'MP3', color: 'bg-violet-100 text-violet-700 border-violet-300' };
-    if (item.filename?.endsWith('.zip')) return { label: 'Images ZIP', color: 'bg-blue-100 text-blue-700 border-blue-300' };
-    return null;
-  };
-
-  const formatBadge = getFormatBadge();
   const platformIcon = getPlatformIcon(item.url);
+  const canCancel = CANCELLABLE.has(item.status);
+
+  const formatBadge = item.format === 'audio' ? { label: 'MP3', cls: 'bg-violet-100 text-violet-700 border-violet-300' } : null;
 
   return (
     <div className='group relative flex items-center gap-3 rounded-2xl border-2 border-zinc-900/90 bg-[#fffdfa] p-3 transition-all hover:-translate-y-0.5'>
       {/* Thumbnail */}
       <div className='relative h-24 w-24 shrink-0 overflow-hidden rounded-xl border-2 border-zinc-900/80 bg-zinc-100'>
-        {thumbnailLoading ? (
+        {thumbState === 'loading' && (
           <div className='flex h-full w-full items-center justify-center'>
-            <div className='h-8 w-8 animate-spin rounded-full border-2 border-zinc-400 border-t-rose-500' />
+            <div className='h-8 w-8 animate-spin rounded-full border-2 border-zinc-300 border-t-orange-500' />
           </div>
-        ) : thumbnailError || !thumbnail ? (
-          <div className='flex h-full w-full items-center justify-center bg-zinc-100'>
-            <svg className='h-full w-full p-6 text-zinc-500' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+        )}
+        {thumbState === 'error' && (
+          <div className='flex h-full w-full items-center justify-center'>
+            <svg className='h-full w-full p-6 text-zinc-400' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -98,52 +68,62 @@ export function TableRow({ item }: TableRowProps) {
               />
             </svg>
           </div>
-        ) : (
-          <img src={thumbnail} alt='Thumbnail' className='h-full w-full object-cover' onError={() => setThumbnailError(true)} />
         )}
-
-        {/* Platform icon overlay */}
-        <div className='absolute left-1.5 top-1.5 flex h-5 w-5 items-center justify-center'>
+        {thumbState === 'ok' && (
+          <img src={thumbnail} alt='thumb' className='h-full w-full object-cover' onError={() => setThumbState('error')} />
+        )}
+        {/* Platform icon */}
+        <div className='absolute left-1.5 top-1.5'>
           {platformIcon.type === 'iconza' ? (
-            <Icon name={platformIcon.name} size={23} className='text-white drop-shadow-lg' />
+            <Icon name={platformIcon.name} size={20} className='text-white drop-shadow' />
           ) : (
-            <HugeiconsIcon icon={platformIcon.icon} size={23} className='text-yellow-400 drop-shadow-lg' />
+            <HugeiconsIcon icon={platformIcon.icon} size={20} className='text-yellow-400 drop-shadow' />
           )}
         </div>
       </div>
 
-      {/* Content */}
+      {/* Info */}
       <div className='min-w-0 flex-1'>
-        <div className='mb-1.5 flex items-start justify-between gap-2'>
+        <div className='mb-1 flex items-start justify-between gap-2'>
           <a
             href={item.url}
             target='_blank'
             rel='noopener noreferrer'
-            className='line-clamp-2 block text-xs font-semibold text-zinc-900 transition-colors hover:text-rose-600 hover:underline sm:text-sm'
-            title={title ?? undefined}
-            aria-label={title || item.url}
+            title={title || item.url}
+            className='line-clamp-2 text-xs font-semibold text-zinc-900 hover:text-orange-600 hover:underline sm:text-sm'
           >
             {title || item.url}
           </a>
-          {/* Format badge */}
-          {formatBadge && (
-            <span className={`shrink-0 rounded-lg border px-1.5 py-0.5 text-[10px] font-bold ${formatBadge.color}`}>
-              {formatBadge.label}
-            </span>
-          )}
+          <div className='flex shrink-0 items-center gap-1'>
+            {formatBadge && (
+              <span className={`rounded-lg border px-1.5 py-0.5 text-[10px] font-bold ${formatBadge.cls}`}>{formatBadge.label}</span>
+            )}
+            {canCancel && (
+              <button
+                onClick={() => onCancel(item.id)}
+                className='rounded-lg border border-zinc-200 bg-zinc-50 p-1 text-zinc-400 transition hover:border-red-300 hover:bg-red-50 hover:text-red-500'
+                title='Cancel download'
+              >
+                <HugeiconsIcon icon={Cancel01Icon} size={14} />
+              </button>
+            )}
+          </div>
         </div>
 
-        <div className='mb-2'>
+        <div className='mb-1.5'>
           <ProgressBar progress={item.progress ?? 0} />
         </div>
 
-        <div className='flex items-center justify-between text-xs text-zinc-600'>
-          <div className='flex items-center gap-3'>
-            <StatusBadge status={item.status} />
-            <span>{getDownloadSpeed()}</span>
-          </div>
-          <span>{item.progress?.toFixed(1) || '0.0'}%</span>
+        <div className='flex items-center justify-between text-xs text-zinc-500'>
+          <StatusBadge status={item.status} />
+          <span>{item.progress?.toFixed(1) ?? '0.0'}%</span>
         </div>
+
+        {item.status === 'Error' && item.error && (
+          <p className='mt-1 line-clamp-1 text-[10px] text-red-500' title={item.error}>
+            {item.error}
+          </p>
+        )}
       </div>
     </div>
   );
