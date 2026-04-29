@@ -5,18 +5,20 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { ProgressBar } from './Progressbar';
 import { useState, useEffect, useRef } from 'react';
 import { getPlatformIcon } from './PlatformIcon';
-import { ImageDelete02Icon } from '@hugeicons/core-free-icons';
+import { ImageDelete02Icon, Cancel01Icon } from '@hugeicons/core-free-icons';
 
 interface TableRowProps {
   item: DownloadItem;
   index: number;
+  onCancel?: (itemId: number) => void;
 }
 
-export function TableRow({ item }: TableRowProps) {
+export function TableRow({ item, onCancel }: TableRowProps) {
   const [thumbnail, setThumbnail] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [thumbnailLoading, setThumbnailLoading] = useState(false);
   const [thumbnailError, setThumbnailError] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
   const fetchedUrls = useRef(new Set<string>());
 
   const fetchThumbnail = async (url: string) => {
@@ -75,6 +77,34 @@ export function TableRow({ item }: TableRowProps) {
     if (item.format === 'video') return { label: 'MP4', color: 'bg-green-100 text-green-700 border-green-300' };
     if (item.format === 'audio') return { label: 'MP3', color: 'bg-violet-100 text-violet-700 border-violet-300' };
     return null;
+  };
+
+  // Determine if cancel button should be shown
+  const canCancel = () => {
+    const cancellableStatuses = ['Queued', 'Starting', 'Downloading', 'Converting', 'Merging'];
+    return cancellableStatuses.includes(item.status) && !isCancelling;
+  };
+
+  // Handle cancel action
+  const handleCancel = async () => {
+    setIsCancelling(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/cancel/${item.id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (response.ok) {
+        console.log(`Download ${item.id} cancelled successfully`);
+        onCancel?.(item.id);
+      } else {
+        console.error('Failed to cancel download');
+        setIsCancelling(false);
+      }
+    } catch (error) {
+      console.error('Error cancelling download:', error);
+      setIsCancelling(false);
+    }
   };
 
   const formatBadge = getFormatBadge();
@@ -139,6 +169,19 @@ export function TableRow({ item }: TableRowProps) {
           <span>{item.progress?.toFixed(1) || '0.0'}%</span>
         </div>
       </div>
+
+      {/* Cancel Button */}
+      {canCancel() && (
+        <button
+          onClick={handleCancel}
+          disabled={isCancelling}
+          className='shrink-0 rounded-lg bg-red-100 p-2 transition-all hover:bg-red-200 hover:shadow-lg active:scale-95 disabled:cursor-not-allowed disabled:opacity-50'
+          title='Cancel this download'
+          aria-label='Cancel download'
+        >
+          <HugeiconsIcon icon={Cancel01Icon} size={20} className={`text-red-600 transition-all ${isCancelling ? 'animate-spin' : ''}`} />
+        </button>
+      )}
     </div>
   );
 }
