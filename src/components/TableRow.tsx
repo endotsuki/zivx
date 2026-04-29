@@ -5,6 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { ProgressBar } from './Progressbar';
 import { useState, useEffect, useRef } from 'react';
 import { getPlatformIcon } from './PlatformIcon';
+import { ImageDelete02Icon } from '@hugeicons/core-free-icons';
 
 interface TableRowProps {
   item: DownloadItem;
@@ -71,8 +72,8 @@ export function TableRow({ item }: TableRowProps) {
 
   // Show format badge (MP3 / ZIP / MP4)
   const getFormatBadge = () => {
+    if (item.format === 'video') return { label: 'MP4', color: 'bg-green-100 text-green-700 border-green-300' };
     if (item.format === 'audio') return { label: 'MP3', color: 'bg-violet-100 text-violet-700 border-violet-300' };
-    if (item.filename?.endsWith('.zip')) return { label: 'Images ZIP', color: 'bg-blue-100 text-blue-700 border-blue-300' };
     return null;
   };
 
@@ -89,14 +90,7 @@ export function TableRow({ item }: TableRowProps) {
           </div>
         ) : thumbnailError || !thumbnail ? (
           <div className='flex h-full w-full items-center justify-center bg-zinc-100'>
-            <svg className='h-full w-full p-6 text-zinc-500' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={1.5}
-                d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'
-              />
-            </svg>
+            <HugeiconsIcon icon={ImageDelete02Icon} size={32} className='text-zinc-400' />
           </div>
         ) : (
           <img src={thumbnail} alt='Thumbnail' className='h-full w-full object-cover' onError={() => setThumbnailError(true)} />
