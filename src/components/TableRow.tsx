@@ -26,7 +26,7 @@ export function TableRow({ item }: TableRowProps) {
 
     try {
       // ✅ Uses the same backend as the rest of the app — no more hardcoded koyeb URL
-      const response = await fetch(`${API_BASE_URL}/api/thumbnail`, {
+      const response = await fetch(`${API_BASE_URL}/thumbnail`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url }),
