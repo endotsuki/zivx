@@ -74,7 +74,7 @@ export function TableRow({ item, onCancel }: TableRowProps) {
 
   // Show format badge (MP3 / ZIP / MP4)
   const getFormatBadge = () => {
-    if (item.format === 'video') return { label: 'MP4', color: 'bg-green-100 text-green-700 border-green-300' };
+    if (item.format === 'video') return { label: 'MP4', color: 'bg-sky-100 text-sky-700 border-sky-300' };
     if (item.format === 'audio') return { label: 'MP3', color: 'bg-violet-100 text-violet-700 border-violet-300' };
     return null;
   };
@@ -109,11 +109,12 @@ export function TableRow({ item, onCancel }: TableRowProps) {
 
   const formatBadge = getFormatBadge();
   const platformIcon = getPlatformIcon(item.url);
+  const showCancel = canCancel();
 
   return (
-    <div className='group relative flex items-center gap-3 rounded-2xl border-2 border-zinc-900/90 bg-[#fffdfa] p-3 transition-all hover:-translate-y-0.5'>
+    <div className='group relative flex items-start gap-3 rounded-2xl border-2 border-zinc-900/90 bg-[#fffdfa] p-3 transition-all hover:border-violet-600 hover:bg-violet-100/50 hover:shadow-lg sm:items-center'>
       {/* Thumbnail */}
-      <div className='relative h-24 w-24 shrink-0 overflow-hidden rounded-xl border-2 border-zinc-900/80 bg-zinc-100'>
+      <div className='relative h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 border-zinc-900/80 bg-zinc-100 sm:h-24 sm:w-24'>
         {thumbnailLoading ? (
           <div className='flex h-full w-full items-center justify-center'>
             <div className='h-8 w-8 animate-spin rounded-full border-2 border-zinc-400 border-t-rose-500' />
@@ -138,12 +139,12 @@ export function TableRow({ item, onCancel }: TableRowProps) {
 
       {/* Content */}
       <div className='min-w-0 flex-1'>
-        <div className='mb-1.5 flex items-start justify-between gap-2'>
+        <div className='mb-1.5 flex flex-wrap items-start gap-2'>
           <a
             href={item.url}
             target='_blank'
             rel='noopener noreferrer'
-            className='line-clamp-2 block text-xs font-semibold text-zinc-900 transition-colors hover:text-rose-600 hover:underline sm:text-sm'
+            className='line-clamp-2 block min-w-[120px] flex-1 text-xs font-semibold text-zinc-900 transition-colors hover:text-rose-600 hover:underline sm:text-sm'
             title={title ?? undefined}
             aria-label={title || item.url}
           >
@@ -161,27 +162,31 @@ export function TableRow({ item, onCancel }: TableRowProps) {
           <ProgressBar progress={item.progress ?? 0} />
         </div>
 
-        <div className='flex items-center justify-between text-xs text-zinc-600'>
-          <div className='flex items-center gap-3'>
+        <div className='flex w-full flex-wrap items-center justify-between gap-2 text-xs text-zinc-600'>
+          <div className='flex items-center gap-2'>
             <StatusBadge status={item.status} />
             <span>{getDownloadSpeed()}</span>
           </div>
-          <span>{item.progress?.toFixed(1) || '0.0'}%</span>
+          <div className='ml-auto flex items-center gap-2'>
+            <span className='tabular-nums font-semibold text-zinc-700'>{item.progress?.toFixed(1) || '0.0'}%</span>
+            {showCancel && (
+              <button
+                onClick={handleCancel}
+                disabled={isCancelling}
+                className='flex h-9 w-9 items-center justify-center rounded-lg bg-red-100 transition-all hover:bg-red-200 hover:shadow-lg active:scale-95 disabled:cursor-not-allowed disabled:opacity-50'
+                title='Cancel this download'
+                aria-label='Cancel download'
+              >
+                <HugeiconsIcon
+                  icon={Cancel01Icon}
+                  size={18}
+                  className={`text-red-600 transition-all ${isCancelling ? 'animate-spin' : ''}`}
+                />
+              </button>
+            )}
+          </div>
         </div>
       </div>
-
-      {/* Cancel Button */}
-      {canCancel() && (
-        <button
-          onClick={handleCancel}
-          disabled={isCancelling}
-          className='shrink-0 rounded-lg bg-red-100 p-2 transition-all hover:bg-red-200 hover:shadow-lg active:scale-95 disabled:cursor-not-allowed disabled:opacity-50'
-          title='Cancel this download'
-          aria-label='Cancel download'
-        >
-          <HugeiconsIcon icon={Cancel01Icon} size={20} className={`text-red-600 transition-all ${isCancelling ? 'animate-spin' : ''}`} />
-        </button>
-      )}
     </div>
   );
 }
