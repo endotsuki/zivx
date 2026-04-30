@@ -9,19 +9,24 @@ interface DownloadTableProps {
   queue: DownloadItem[];
   currentPage: number;
   rowsPerPage: number;
-  setCurrentPage: (page: number) => void;
-  setRowsPerPage: (rows: number) => void;
+  setCurrentPage: (p: number) => void;
+  setRowsPerPage: (r: number) => void;
   clearDownloads: () => void;
+  cancelDownload: (id: number) => void;
 }
 
-export function DownloadTable({ queue, currentPage, rowsPerPage, setCurrentPage, setRowsPerPage, clearDownloads }: DownloadTableProps) {
-  const paginate = (arr: DownloadItem[]) => {
-    const start = (currentPage - 1) * rowsPerPage;
-    return arr.slice(start, start + rowsPerPage);
-  };
-
+export function DownloadTable({
+  queue,
+  currentPage,
+  rowsPerPage,
+  setCurrentPage,
+  setRowsPerPage,
+  clearDownloads,
+  cancelDownload,
+}: DownloadTableProps) {
+  const start = (currentPage - 1) * rowsPerPage;
+  const paginated = queue.slice(start, start + rowsPerPage);
   const totalPages = Math.max(1, Math.ceil(queue.length / rowsPerPage));
-  const paginated = paginate(queue);
 
   return (
     <div className='space-y-4'>
@@ -33,22 +38,23 @@ export function DownloadTable({ queue, currentPage, rowsPerPage, setCurrentPage,
           <HugeiconsIcon icon={Delete01Icon} size={20} />
         </Button>
       </div>
-      <>
-        {paginated.length === 0 ? (
-          <div className='flex flex-col items-center gap-3'>
-            <div className='flex h-20 w-20 items-center justify-center rounded-full border-2 border-zinc-900 bg-zinc-100 text-zinc-500'>
-              <HugeiconsIcon icon={Download04Icon} size={40} strokeWidth={1} />
-            </div>
-            <div className='text-center'>
-              <p className='font-semibold text-zinc-900'>No downloads yet</p>
-              <p className='mt-0.5 text-sm text-zinc-600'>Paste a URL above to start</p>
-            </div>
+      {paginated.length === 0 ? (
+        <div className='flex flex-col items-center gap-3 py-8'>
+          <div className='flex h-20 w-20 items-center justify-center rounded-full border-2 border-zinc-900 bg-zinc-100 text-zinc-500'>
+            <HugeiconsIcon icon={Download04Icon} size={40} strokeWidth={1} />
           </div>
-        ) : (
-          paginated.map((item) => <TableRow key={item.id} item={item} index={0} />)
-        )}
-      </>
-
+          <div className='text-center'>
+            <p className='font-semibold text-zinc-900'>No downloads yet</p>
+            <p className='mt-0.5 text-sm text-zinc-600'>Paste a URL above to start</p>
+          </div>
+        </div>
+      ) : (
+        <div className='space-y-2'>
+          {paginated.map((item, i) => (
+            <TableRow key={item.id} item={item} index={i} onCancel={cancelDownload} />
+          ))}
+        </div>
+      )}
       <TablePagination
         currentPage={currentPage}
         totalPages={totalPages}
