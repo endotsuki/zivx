@@ -22,6 +22,12 @@ export function TableRow({ item, onCancel }: TableRowProps) {
   const fetched = useRef(new Set<string>());
 
   useEffect(() => {
+    try {
+      new URL(item.url);
+    } catch {
+      setThumbError(true);
+      return;
+    }
     if (fetched.current.has(item.url)) return;
     setThumbLoading(true);
     apiFetch('/api/thumbnail', {
@@ -37,7 +43,9 @@ export function TableRow({ item, onCancel }: TableRowProps) {
           fetched.current.add(item.url);
         } else setThumbError(true);
       })
-      .catch(() => setThumbError(true))
+      .catch(() => {
+        setThumbError(true);
+      })
       .finally(() => setThumbLoading(false));
   }, [item.url]);
 
