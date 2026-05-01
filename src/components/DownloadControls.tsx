@@ -70,7 +70,7 @@ export function DownloadControls({
             <Button
               variant='ghost'
               onClick={handlePasteFromClipboard}
-              className='absolute right-1.5 top-1/2 h-8 -translate-y-1/2 gap-1.5 rounded-xl border border-sky-500 bg-sky-50 px-2.5 text-xs font-semibold text-sky-600 transition-all hover:border-sky-600 hover:bg-sky-100 sm:h-9 sm:px-3 sm:text-sm'
+              className='absolute right-1 top-1/2 h-8 -translate-y-1/2 gap-1.5 rounded-xl border border-sky-500 bg-sky-50 px-2.5 text-xs font-semibold text-sky-600 transition-all hover:border-sky-600 hover:bg-sky-100 sm:right-1.5 sm:h-9 sm:px-3 sm:text-sm'
             >
               <HugeiconsIcon icon={Task02Icon} size={16} className='text-sky-500 sm:size-5' />
               <span>Paste</span>
@@ -91,7 +91,7 @@ export function DownloadControls({
             <Button
               variant='on-hold'
               onClick={() => queueSingle('audio')}
-              className='h-10 flex-1 rounded-none rounded-r-xl border-2 border-l-0 border-violet-700 bg-violet-600 px-3 text-xs font-semibold text-white hover:bg-violet-600 sm:h-12 sm:px-6 sm:text-base'
+              className='h-10 flex-1 rounded-none rounded-r-xl border-2 border-l-0 border-violet-700 bg-violet-500 px-3 text-xs font-semibold text-white hover:bg-violet-600 sm:h-12 sm:px-6 sm:text-base'
             >
               <HugeiconsIcon icon={MusicNote03Icon} size={16} className='sm:size-5' />
               <span className='ml-1'>MP3</span>
@@ -163,7 +163,7 @@ export function DownloadControls({
           <div>
             <p className='text-xs font-black uppercase tracking-wider text-zinc-700 sm:text-sm'>Batch Upload</p>
             <p className='text-xs text-zinc-500 sm:text-sm'>
-              Drop a <code className='rounded bg-zinc-200 px-1 py-0.5'>.txt</code> file with one URL per line.
+              Drop a <code className='rounded bg-zinc-200 px-1 py-0.5'>.txt</code> file with many URLs per file.
             </p>
           </div>
 

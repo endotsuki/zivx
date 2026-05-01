@@ -40,7 +40,7 @@ export function PageHeader() {
               <HugeiconsIcon icon={HelpCircleIcon} size={18} className='sm:size-6' />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className='w-56 border-2 border-zinc-900 bg-white/50 p-2 backdrop-blur-lg sm:w-80'>
+          <DropdownMenuContent className='mr-3 w-56 border-2 border-zinc-900 bg-white/70 p-2 backdrop-blur-lg sm:w-80'>
             <DropdownMenuLabel className='text-xs font-bold text-zinc-800'>Supported Platforms</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <div className='grid grid-cols-3 gap-1 p-2 sm:grid-cols-4 sm:gap-2'>
