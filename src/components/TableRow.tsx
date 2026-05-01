@@ -122,11 +122,6 @@ export function TableRow({ item, onCancel }: TableRowProps) {
           <div className='flex items-center gap-1 sm:gap-2'>
             <StatusBadge status={item.status} />
             {speedLabel && <span className='hidden sm:inline'>{speedLabel}</span>}
-            {item.status === 'Error' && item.error && (
-              <span className='truncate text-xs text-rose-500' title={item.error}>
-                {item.error.slice(0, 30)}
-              </span>
-            )}
           </div>
           <div className='ml-auto flex items-center gap-1 sm:gap-2'>
             <span className='font-semibold tabular-nums text-zinc-700'>{item.progress?.toFixed(1) ?? '0.0'}%</span>

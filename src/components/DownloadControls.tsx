@@ -56,7 +56,7 @@ export function DownloadControls({
       {/* ── URL Input + Action Buttons ── */}
       <div>
         <label className='mb-1.5 block text-sm font-black uppercase tracking-wider sm:text-base'>URL</label>
-        <div className='flex flex-col gap-2 sm:gap-3'>
+        <div className='flex flex-col gap-2 sm:flex-row sm:gap-3'>
           {/* Input row */}
           <div className='relative flex-1'>
             <input
@@ -78,11 +78,11 @@ export function DownloadControls({
           </div>
 
           {/* Two action buttons */}
-          <div className='flex gap-2 sm:gap-3'>
+          <div className='flex'>
             <Button
               variant='on-hold'
               onClick={() => queueSingle('video')}
-              className='h-10 flex-1 rounded-xl border-2 border-zinc-900 bg-rose-500 px-3 text-xs font-semibold text-white hover:bg-rose-600 sm:h-12 sm:rounded-2xl sm:px-6 sm:text-base'
+              className='h-10 flex-1 rounded-none rounded-l-xl border-2 border-r-0 border-rose-700 bg-rose-500 px-3 text-xs font-semibold text-white hover:bg-rose-600 sm:h-12 sm:px-6 sm:text-base'
             >
               <HugeiconsIcon icon={VideoAiIcon} size={16} className='sm:size-5' />
               <span className='ml-1'>MP4</span>
@@ -91,7 +91,7 @@ export function DownloadControls({
             <Button
               variant='on-hold'
               onClick={() => queueSingle('audio')}
-              className='h-10 flex-1 rounded-xl border-2 border-zinc-900 bg-violet-600 px-3 text-xs font-semibold text-white hover:bg-violet-700 sm:h-12 sm:rounded-2xl sm:px-6 sm:text-base'
+              className='h-10 flex-1 rounded-none rounded-r-xl border-2 border-l-0 border-violet-700 bg-violet-600 px-3 text-xs font-semibold text-white hover:bg-violet-600 sm:h-12 sm:px-6 sm:text-base'
             >
               <HugeiconsIcon icon={MusicNote03Icon} size={16} className='sm:size-5' />
               <span className='ml-1'>MP3</span>
