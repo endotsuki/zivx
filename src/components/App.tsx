@@ -154,15 +154,15 @@ export default function VideoDownloader() {
   };
 
   return (
-    <div className='min-h-screen bg-[#f7f3eb] p-4 text-zinc-900 sm:p-6'>
+    <div className='min-h-screen bg-[#f7f3eb] p-3 text-zinc-900 sm:p-4 md:p-6'>
       <div className='pointer-events-none fixed inset-0 -z-0 opacity-60 [background:radial-gradient(circle_at_85%_12%,#ffd3a6_0%,transparent_28%),radial-gradient(circle_at_12%_90%,#ffe9b8_0%,transparent_24%)]' />
-      <div className='relative z-10 mx-auto w-[95%] max-w-[1240px] space-y-5'>
+      <div className='relative z-10 mx-auto w-full max-w-[1240px] space-y-3 px-2 sm:space-y-4 sm:px-4 md:space-y-5'>
         <PageHeader />
-        <div className='rounded-[28px] border-[3px] border-zinc-900 bg-[#fffdfa] p-4 shadow-[8px_8px_0_0_#111827] sm:p-6'>
-          <div className='mb-4 flex flex-wrap items-end justify-between gap-2 border-b-2 border-zinc-900/10 pb-3'>
+        <div className='rounded-xl border-[3px] border-zinc-900 bg-[#fffdfa] p-3 shadow-[4px_4px_0_0_#111827] sm:rounded-2xl sm:p-4 md:rounded-[28px] md:p-6 md:shadow-[8px_8px_0_0_#111827]'>
+          <div className='mb-3 flex flex-wrap items-end justify-between gap-2 border-b-2 border-zinc-900/10 pb-2 sm:mb-4 sm:pb-3'>
             <div>
               <p className='text-xs font-semibold uppercase tracking-widest text-zinc-600'>Quick Add</p>
-              <h2 className='text-lg font-black text-zinc-900 sm:text-xl'>Paste links and start downloading</h2>
+              <h2 className='text-base font-black text-zinc-900 sm:text-lg md:text-xl'>Paste links and start downloading</h2>
             </div>
           </div>
           <DownloadControls
@@ -181,10 +181,9 @@ export default function VideoDownloader() {
           downloading={stats.downloading}
           queued={stats.queue.filter((q) => q.status === 'Queued').length}
         />
-        <div className='rounded-[28px] border-[3px] border-zinc-900 bg-[#fffdfa] p-4 shadow-[8px_8px_0_0_#111827] sm:p-6'>
-          <div className='mb-4 border-b-2 border-zinc-900/10 pb-3'>
-            <p className='text-xs font-semibold uppercase tracking-widest text-zinc-600'>Activity</p>
-            <h2 className='text-lg font-black text-zinc-900 sm:text-xl'>Download Queue</h2>
+        <div className='rounded-xl border-[3px] border-zinc-900 bg-[#fffdfa] p-3 shadow-[4px_4px_0_0_#111827] sm:rounded-2xl sm:p-4 md:rounded-[28px] md:p-6 md:shadow-[8px_8px_0_0_#111827]'>
+          <div className='mb-3 border-b-2 border-zinc-900/10 pb-2 sm:mb-4 sm:pb-3'>
+            <h2 className='text-base font-black text-zinc-900 sm:text-lg md:text-xl'>Download Queue</h2>
           </div>
           <DownloadTable
             queue={stats.queue}

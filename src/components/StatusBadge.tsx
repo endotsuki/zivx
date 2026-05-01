@@ -77,12 +77,12 @@ export function StatusBadge({ status }: StatusBadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium ${style.bg} ${style.text} ${style.border}`}
+      className={`inline-flex items-center gap-0.5 rounded-full border px-2 py-1 text-xs font-medium sm:gap-1 sm:px-3 sm:py-1.5 ${style.bg} ${style.text} ${style.border}`}
     >
       {isDownloading ? (
-        <div className='h-4 w-4 animate-spin rounded-full border-2 border-yellow-300 border-t-yellow-600'></div>
+        <div className='h-3 w-3 animate-spin rounded-full border-2 border-yellow-300 border-t-yellow-600 sm:h-4 sm:w-4'></div>
       ) : (
-        <HugeiconsIcon icon={style.icon} size={16} />
+        <HugeiconsIcon icon={style.icon} size={14} className='sm:size-4' />
       )}
       {status}
     </span>

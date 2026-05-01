@@ -22,10 +22,10 @@ const supportedPlatforms = [
 
 export function PageHeader() {
   return (
-    <div className='mb-6 flex flex-wrap items-center justify-between gap-4'>
+    <div className='mb-4 flex flex-wrap items-center justify-between gap-2 sm:mb-6 sm:gap-4'>
       <div className='flex items-center gap-1'>
-        <img src='/logo.png' alt='Logo' className='h-11 w-11' />
-        <h1 className='text-3xl font-black tracking-tight text-zinc-900'>Dovio</h1>
+        <img src='/logo.png' alt='Logo' className='h-9 w-9 sm:h-11 sm:w-11' />
+        <h1 className='text-2xl font-black tracking-tight text-zinc-900 sm:text-3xl'>Dovio</h1>
       </div>
 
       <div className='flex items-center'>
@@ -33,23 +33,24 @@ export function PageHeader() {
           <DropdownMenuTrigger asChild>
             <Button
               variant='outline'
-              className='select-none border-2 border-zinc-900 bg-white text-base font-bold text-zinc-900 hover:bg-rose-100'
+              className='select-none border-2 border-zinc-900 bg-white text-xs font-bold text-zinc-900 hover:bg-rose-100 sm:text-base'
             >
-              Supported Services
-              <HugeiconsIcon icon={HelpCircleIcon} size={23} />
+              <span className='hidden sm:inline'>Supported Services</span>
+              <span className='sm:hidden'>Services</span>
+              <HugeiconsIcon icon={HelpCircleIcon} size={18} className='sm:size-6' />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className='w-80 border-2 border-zinc-900 bg-white/50 p-2 backdrop-blur-lg'>
+          <DropdownMenuContent className='w-56 border-2 border-zinc-900 bg-white/50 p-2 backdrop-blur-lg sm:w-80'>
             <DropdownMenuLabel className='text-xs font-bold text-zinc-800'>Supported Platforms</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <div className='grid grid-cols-4 gap-2 p-2'>
+            <div className='grid grid-cols-3 gap-1 p-2 sm:grid-cols-4 sm:gap-2'>
               {supportedPlatforms.map((platform) => (
                 <div
                   key={platform.name}
-                  className='flex cursor-pointer flex-col items-center gap-1 rounded-xl p-2 transition-colors hover:bg-rose-100'
+                  className='flex cursor-pointer flex-col items-center gap-0.5 rounded-lg p-1.5 transition-colors hover:bg-rose-100 sm:rounded-xl sm:p-2'
                 >
-                  <Icon name={platform.icon} className='h-6 w-6 text-zinc-700' />
-                  <span className='text-sm font-black text-zinc-700'>{platform.name}</span>
+                  <Icon name={platform.icon} className='h-4 w-4 text-zinc-700 sm:h-6 sm:w-6' />
+                  <span className='text-xs font-black text-zinc-700 sm:text-sm'>{platform.name}</span>
                 </div>
               ))}
             </div>

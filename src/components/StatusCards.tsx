@@ -20,14 +20,16 @@ export function StatsCards({ total, completed, downloading, queued }: StatsCards
   ];
 
   return (
-    <div className='mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5'>
+    <div className='mb-4 grid grid-cols-2 gap-2 sm:mb-6 sm:grid-cols-3 sm:gap-3 md:grid-cols-5'>
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className={`group relative rounded-3xl border-[3px] p-5 shadow-[4px_4px_0_0_#111827] transition-all ${stat.border} ${stat.bg}`}
+          className={`group relative rounded-2xl border-[3px] p-2.5 shadow-[2px_2px_0_0_#111827] transition-all sm:rounded-3xl sm:p-5 sm:shadow-[4px_4px_0_0_#111827] ${stat.border} ${stat.bg}`}
         >
-          <div className='mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-600'>{stat.label}</div>
-          <div className={`text-5xl font-black tabular-nums ${stat.color}`}>{stat.value}</div>
+          <div className='mb-0.5 text-xs font-semibold uppercase tracking-[0.08em] text-zinc-600 sm:mb-1 sm:tracking-[0.16em]'>
+            {stat.label}
+          </div>
+          <div className={`text-2xl font-black tabular-nums sm:text-5xl ${stat.color}`}>{stat.value}</div>
         </div>
       ))}
     </div>

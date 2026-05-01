@@ -36,12 +36,15 @@ export function TablePagination({
   const endItem = Math.min(currentPage * rowsPerPage, totalItems);
 
   return (
-    <div className='flex flex-wrap items-center justify-between gap-4'>
-      <div className='flex items-center gap-3'>
+    <div className='flex flex-wrap items-center justify-between gap-2 sm:gap-4'>
+      <div className='flex items-center gap-2 sm:gap-3'>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='archived' className='gap-2 border-2 border-zinc-900 bg-white text-zinc-700 hover:bg-rose-100'>
-              Show <span className='font-semibold text-zinc-900'>{rowsPerPage}</span>
+            <Button
+              variant='archived'
+              className='gap-1 border-2 border-zinc-900 bg-white text-xs text-zinc-700 hover:bg-rose-100 sm:gap-2 sm:text-sm'
+            >
+              <span className='hidden sm:inline'>Show</span> <span className='font-semibold text-zinc-900'>{rowsPerPage}</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align='start' className='w-36 border-2 border-zinc-900 bg-[#fffdfa]'>
@@ -55,7 +58,7 @@ export function TablePagination({
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <span className='hidden text-sm text-zinc-600 sm:inline'>
+        <span className='hidden text-xs text-zinc-600 sm:inline sm:text-sm'>
           {totalItems > 0 ? (
             <>
               <span className='text-zinc-800'>{startItem}</span>–<span className='text-zinc-800'>{endItem}</span> of{' '}
@@ -67,18 +70,18 @@ export function TablePagination({
         </span>
       </div>
 
-      <div className='flex items-center gap-2'>
+      <div className='flex items-center gap-1 sm:gap-2'>
         <Button
           variant='archived'
           onClick={() => setCurrentPage(currentPage - 1)}
           disabled={currentPage <= 1}
-          className='h-9 border-2 border-zinc-900 bg-white px-3 text-zinc-800 hover:bg-rose-100'
+          className='h-8 border-2 border-zinc-900 bg-white px-2 text-xs text-zinc-800 hover:bg-rose-100 sm:h-9 sm:px-3 sm:text-sm'
         >
-          <HugeiconsIcon size={16} icon={ArrowLeft01Icon} />
-          <span className='ml-1 hidden sm:inline'>Previous</span>
+          <HugeiconsIcon size={14} icon={ArrowLeft01Icon} className='sm:size-4' />
+          <span className='ml-0.5 hidden sm:inline'>Previous</span>
         </Button>
-        <div className='flex h-9 items-center gap-1.5 rounded-xl border-2 border-zinc-900 bg-white px-3 text-sm'>
-          <span className='text-zinc-600'>Page</span>
+        <div className='flex h-8 items-center gap-1 rounded-lg border-2 border-zinc-900 bg-white px-2 text-xs sm:h-9 sm:gap-1.5 sm:rounded-xl sm:px-3 sm:text-sm'>
+          <span className='text-zinc-600'>Pg</span>
           <span className='font-bold text-rose-600'>{currentPage}</span>
           <span className='text-zinc-400'>/</span>
           <span className='font-medium text-zinc-800'>{totalPages}</span>
@@ -87,10 +90,10 @@ export function TablePagination({
           variant='archived'
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className='h-9 border-2 border-zinc-900 bg-white px-3 text-zinc-800 hover:bg-rose-100'
+          className='h-8 border-2 border-zinc-900 bg-white px-2 text-xs text-zinc-800 hover:bg-rose-100 sm:h-9 sm:px-3 sm:text-sm'
         >
-          <span className='mr-1 hidden sm:inline'>Next</span>
-          <HugeiconsIcon size={16} icon={ArrowRight01Icon} />
+          <span className='mr-0.5 hidden sm:inline'>Next</span>
+          <HugeiconsIcon size={14} icon={ArrowRight01Icon} className='sm:size-4' />
         </Button>
       </div>
     </div>
