@@ -1,7 +1,7 @@
 import { TableRow } from './TableRow';
 import { TablePagination } from './TablePagination';
 import type { DownloadItem } from './App';
-import { Delete01Icon, Download04Icon } from '@hugeicons/core-free-icons';
+import { Delete01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Button } from '../ui/button';
 
