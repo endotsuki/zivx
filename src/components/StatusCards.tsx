@@ -24,7 +24,7 @@ export function StatsCards({ total, completed, downloading, queued }: StatsCards
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className={`group relative rounded-3xl border-[3px] p-5 shadow-[4px_4px_0_0_#111827] transition-all hover:-translate-y-0.5 ${stat.border} ${stat.bg}`}
+          className={`group relative rounded-3xl border-[3px] p-5 shadow-[4px_4px_0_0_#111827] transition-all ${stat.border} ${stat.bg}`}
         >
           <div className='mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-600'>{stat.label}</div>
           <div className={`text-5xl font-black tabular-nums ${stat.color}`}>{stat.value}</div>
