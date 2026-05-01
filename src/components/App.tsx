@@ -7,7 +7,6 @@ import { DownloadTable } from './DownloadTable';
 const RAW = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 export const API_BASE_URL = RAW.replace(/\/api$/, '').replace(/\/$/, '');
 
-// Session ID — persists across reloads, unique per tab
 function getSessionId(): string {
   const key = 'vd_sid';
   let sid = sessionStorage.getItem(key);
@@ -19,7 +18,6 @@ function getSessionId(): string {
 }
 export const SESSION_ID = getSessionId();
 
-// All fetches automatically include session_id query param
 export const apiFetch = (path: string, init?: RequestInit) =>
   fetch(`${API_BASE_URL}${path}${path.includes('?') ? '&' : '?'}session_id=${SESSION_ID}`, {
     ...init,
@@ -43,8 +41,6 @@ export interface StatsData {
   queue: DownloadItem[];
 }
 
-// Track which completed items already triggered a browser download
-// sessionStorage survives page reload — prevents re-downloading on refresh
 function getDownloadedIds(): Set<number> {
   try {
     return new Set(JSON.parse(sessionStorage.getItem('vd_dl_ids') || '[]'));
@@ -59,7 +55,6 @@ function markDownloaded(id: number) {
 }
 
 export default function VideoDownloader() {
-  const [activeTab, setActiveTab] = useState<'video' | 'audio'>('video');
   const [videoLink, setVideoLink] = useState('');
   const [selectedDirectory, setSelectedDirectory] = useState<FileSystemDirectoryHandle | null>(null);
   const [stats, setStats] = useState<StatsData>({ total: 0, completed: 0, downloading: 0, queue: [] });
@@ -67,7 +62,6 @@ export default function VideoDownloader() {
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // SSE for real-time updates — goes direct to backend, not through Vite proxy
   useEffect(() => {
     let es: EventSource;
     let retry: ReturnType<typeof setTimeout>;
@@ -90,12 +84,11 @@ export default function VideoDownloader() {
     };
   }, []);
 
-  // Auto-download to browser when item completes
   useEffect(() => {
     stats.queue.forEach(async (item) => {
       if (item.status !== 'Completed' || !item.filename) return;
       if (getDownloadedIds().has(item.id)) return;
-      markDownloaded(item.id); // mark BEFORE triggering to prevent double download
+      markDownloaded(item.id);
 
       if (selectedDirectory) {
         try {
@@ -109,7 +102,6 @@ export default function VideoDownloader() {
           return;
         } catch {}
       }
-      // Standard browser download
       const a = document.createElement('a');
       a.href = `${API_BASE_URL}/api/download/${item.id}?session_id=${SESSION_ID}`;
       a.download = item.filename;
@@ -120,13 +112,13 @@ export default function VideoDownloader() {
     });
   }, [stats.queue, selectedDirectory]);
 
-  const queueSingle = async () => {
+  const queueSingle = async (format: 'video' | 'audio') => {
     const link = videoLink.trim();
     if (!link) return alert('Please enter a link');
     const res = await apiFetch('/api/queue', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ urls: [link], format: activeTab }),
+      body: JSON.stringify({ urls: [link], format }),
     });
     if (res.ok) {
       setStats(await res.json());
@@ -139,7 +131,8 @@ export default function VideoDownloader() {
     if (!file) return alert('Choose a .txt file');
     const fd = new FormData();
     fd.append('file', file);
-    fd.append('format', activeTab);
+    // Batch uploads default to video; adjust if you need format selection for batch too
+    fd.append('format', 'video');
     const res = await apiFetch('/api/upload', { method: 'POST', body: fd });
     if (res.ok) {
       setStats(await res.json());
@@ -180,8 +173,6 @@ export default function VideoDownloader() {
             queueSingle={queueSingle}
             uploadList={uploadList}
             fileInputRef={fileInputRef}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
           />
         </div>
         <StatsCards

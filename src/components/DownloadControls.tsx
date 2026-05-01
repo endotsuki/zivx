@@ -9,11 +9,9 @@ interface DownloadControlsProps {
   setVideoLink: (value: string) => void;
   selectedDirectory: FileSystemDirectoryHandle | null;
   setSelectedDirectory: (handle: FileSystemDirectoryHandle | null) => void;
-  queueSingle: () => void;
+  queueSingle: (format: 'video' | 'audio') => void;
   uploadList: () => void;
   fileInputRef: RefObject<HTMLInputElement>;
-  activeTab: 'video' | 'audio';
-  setActiveTab: (tab: 'video' | 'audio') => void;
 }
 
 const inputBase =
@@ -27,11 +25,7 @@ export function DownloadControls({
   queueSingle,
   uploadList,
   fileInputRef,
-  activeTab,
-  setActiveTab,
 }: DownloadControlsProps) {
-  const isAudio = activeTab === 'audio';
-
   const handleSelectDirectory = async () => {
     if (!('showDirectoryPicker' in window)) {
       alert('Directory picker is not supported in this browser. Please use Chrome, Edge, or Opera.');
@@ -59,63 +53,48 @@ export function DownloadControls({
 
   return (
     <div className='space-y-6'>
-      {/* ── Video / Audio Tab Switcher ── */}
-      <div className='flex w-fit gap-2 rounded-2xl border-2 border-zinc-900 bg-zinc-100 p-1'>
-        {(['video', 'audio'] as const).map((tab) => (
-          <motion.button
-            key={tab}
-            type='button'
-            onClick={() => setActiveTab(tab)}
-            className={`relative flex items-center gap-2 rounded-xl px-5 py-2 text-sm font-bold transition-colors ${
-              activeTab === tab ? 'text-white' : 'text-zinc-500 hover:text-zinc-800'
-            }`}
-          >
-            {activeTab === tab && (
-              <motion.div
-                layoutId='activeTabBg'
-                className={`absolute inset-0 rounded-xl ${tab === 'audio' ? 'bg-violet-600' : 'bg-rose-500'}`}
-                transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
-              />
-            )}
-            <span className='relative z-10 flex items-center gap-1.5'>
-              <HugeiconsIcon icon={tab === 'video' ? VideoAiIcon : MusicNote03Icon} size={16} />
-              {tab === 'video' ? 'MP4' : 'MP3'}
-            </span>
-          </motion.button>
-        ))}
-      </div>
-
-      {/* ── URL Input + Action Button ── */}
+      {/* ── URL Input + Action Buttons ── */}
       <div>
-        <label className='mb-1.5 block font-black uppercase tracking-wider'>{isAudio ? 'Audio URL' : 'Single URL'}</label>
-        <div className='relative flex flex-col gap-2 sm:flex-row sm:items-stretch sm:gap-3'>
+        <label className='mb-1.5 block font-black uppercase tracking-wider'>URL</label>
+        <div className='flex flex-col gap-2'>
+          {/* Input row */}
           <div className='relative flex-1'>
             <input
-              className={`h-12 w-full min-w-0 rounded-2xl pr-24 ${inputBase}`}
+              className={`h-14 w-full min-w-0 rounded-2xl pr-24 ${inputBase}`}
               type='text'
-              placeholder={isAudio ? 'Paste URL to extract MP3…' : 'Paste video URL…'}
+              placeholder='Paste video or audio URL…'
               value={videoLink}
               onChange={(e) => setVideoLink(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && queueSingle()}
+              onKeyDown={(e) => e.key === 'Enter' && queueSingle('video')}
             />
-            {/* Paste from clipboard */}
-            <div className='absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1 rounded-xl border border-zinc-200 bg-zinc-50 px-1 py-1'>
-              <Button variant='ghost' size='icon' onClick={handlePasteFromClipboard} className='h-7 w-7 rounded-lg'>
-                <HugeiconsIcon icon={Task02Icon} size={16} className='text-rose-500' />
+            <div className='absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center rounded-xl border border-zinc-400 bg-zinc-100 p-1.5'>
+              <Button variant='ghost' size='icon' onClick={handlePasteFromClipboard} className='h-7 w-auto rounded-lg'>
+                <HugeiconsIcon icon={Task02Icon} size={16} className='text-sky-500' />
+                Paste link
               </Button>
             </div>
           </div>
 
-          <Button
-            variant='on-hold'
-            onClick={queueSingle}
-            className={`h-12 shrink-0 rounded-2xl border-2 border-zinc-900 px-6 text-base font-semibold text-white sm:w-auto ${
-              isAudio ? 'bg-violet-600 hover:bg-violet-700' : 'bg-rose-500 hover:bg-rose-600'
-            }`}
-          >
-            <HugeiconsIcon icon={isAudio ? MusicNote03Icon : VideoAiIcon} size={20} />
-            {isAudio ? 'Extract MP3' : 'Download MP4'}
-          </Button>
+          {/* Two action buttons */}
+          <div className='flex gap-2'>
+            <Button
+              variant='on-hold'
+              onClick={() => queueSingle('video')}
+              className='h-12 flex-1 rounded-2xl border-2 border-zinc-900 bg-rose-500 px-6 text-base font-semibold text-white hover:bg-rose-600'
+            >
+              <HugeiconsIcon icon={VideoAiIcon} size={20} />
+              Download MP4
+            </Button>
+
+            <Button
+              variant='on-hold'
+              onClick={() => queueSingle('audio')}
+              className='h-12 flex-1 rounded-2xl border-2 border-zinc-900 bg-violet-600 px-6 text-base font-semibold text-white hover:bg-violet-700'
+            >
+              <HugeiconsIcon icon={MusicNote03Icon} size={20} />
+              Extract MP3
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -188,7 +167,6 @@ export function DownloadControls({
 
           <input ref={fileInputRef} type='file' accept='.txt' className='hidden' id='batch-file' onChange={uploadList} />
 
-          {/* Drop zone */}
           <label
             htmlFor='batch-file'
             onDragOver={(e) => {
@@ -201,10 +179,8 @@ export function DownloadControls({
             onDrop={(e) => {
               e.preventDefault();
               e.currentTarget.classList.remove('border-rose-400', 'bg-rose-50');
-              // Transfer dropped files to the input element
               if (fileInputRef.current && e.dataTransfer.files.length > 0) {
                 fileInputRef.current.files = e.dataTransfer.files;
-                // Trigger the change event to process the file
                 const event = new Event('change', { bubbles: true });
                 fileInputRef.current.dispatchEvent(event);
               }

@@ -40,9 +40,6 @@ export function DownloadTable({
       </div>
       {paginated.length === 0 ? (
         <div className='flex flex-col items-center gap-3 py-8'>
-          <div className='flex h-20 w-20 items-center justify-center rounded-full border-2 border-zinc-900 bg-zinc-100 text-zinc-500'>
-            <HugeiconsIcon icon={Download04Icon} size={40} strokeWidth={1} />
-          </div>
           <div className='text-center'>
             <p className='font-semibold text-zinc-900'>No downloads yet</p>
             <p className='mt-0.5 text-sm text-zinc-600'>Paste a URL above to start</p>

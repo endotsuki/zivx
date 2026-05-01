@@ -42,7 +42,7 @@ export function DownloadCard({ item, isCompleted = false }: DownloadCardProps) {
             <svg width='14' height='14' viewBox='0 0 24 24' fill='none'>
               <path d='M8 5v14l11-7z' fill='currentColor' />
             </svg>
-            <span>{item.size || 'Completed'}</span>
+            <span>Completed</span>
           </div>
         )}
       </div>
