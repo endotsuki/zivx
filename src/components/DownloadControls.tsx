@@ -1,7 +1,7 @@
 import { type RefObject } from 'react';
 import { Button } from '../ui/button';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Delete01Icon, CloudDownloadIcon, Folder01Icon, Task02Icon, MusicNote03Icon, VideoAiIcon } from '@hugeicons/core-free-icons';
+import { Delete01Icon, CloudDownloadIcon, Folder03Icon, Task02Icon, MusicNote03Icon, VideoAiIcon } from '@hugeicons/core-free-icons';
 import { AnimatePresence, motion } from 'framer-motion';
 
 interface DownloadControlsProps {
@@ -131,7 +131,7 @@ export function DownloadControls({
               layout
               type='button'
               onClick={handleSelectDirectory}
-              className={`flex min-h-[46px] min-w-0 flex-1 items-center ${inputBase} cursor-pointer`}
+              className='flex min-h-[46px] min-w-0 flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-zinc-900 bg-white px-4 text-zinc-600 transition-colors hover:bg-rose-50 hover:text-rose-600'
             >
               <AnimatePresence mode='popLayout'>
                 {selectedDirectory ? (
@@ -140,10 +140,10 @@ export function DownloadControls({
                     initial={{ opacity: 0, y: 4 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -4 }}
-                    className='flex min-w-0 items-center truncate text-zinc-700'
+                    className='flex min-w-0 items-center justify-center truncate'
                   >
-                    <HugeiconsIcon icon={Folder01Icon} size={20} className='mr-1 fill-rose-500 text-transparent' />
-                    {selectedDirectory.name}
+                    <HugeiconsIcon icon={Folder03Icon} size={20} className='mr-1 flex-shrink-0 text-sky-500 text-transparent' />
+                    <span className='truncate font-semibold'>{selectedDirectory.name}</span>
                   </motion.span>
                 ) : (
                   <motion.span
@@ -151,9 +151,10 @@ export function DownloadControls({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className='text-zinc-500'
+                    className='flex items-center gap-2 font-semibold'
                   >
-                    Browser default
+                    <HugeiconsIcon icon={Folder03Icon} size={20} />
+                    Choose Folder
                   </motion.span>
                 )}
               </AnimatePresence>
@@ -177,20 +178,47 @@ export function DownloadControls({
           </div>
         </div>
 
-        <div className='space-y-2 rounded-2xl border-2 border-zinc-900 bg-zinc-50 p-3'>
+        <div className='space-y-2.5 rounded-2xl border-2 border-zinc-900 bg-zinc-50 p-3'>
           <div>
             <p className='text-sm font-black uppercase tracking-wider text-zinc-700'>Batch Upload</p>
-            <p className='text-sm text-zinc-500'>Upload a `.txt` file with many links.</p>
+            <p className='text-sm text-zinc-500'>
+              Drop a <code className='rounded bg-zinc-200 px-1 py-0.5 text-xs'>.txt</code> file with one URL per line.
+            </p>
           </div>
-          <div className='flex items-center'>
-            <input ref={fileInputRef} type='file' accept='.txt' className='hidden' id='batch-file' onChange={uploadList} />
-            <Button variant='archived' className='h-[46px] w-full rounded-2xl px-4'>
-              <label htmlFor='batch-file' className='inline-flex w-full cursor-pointer items-center justify-center gap-2'>
-                <HugeiconsIcon icon={CloudDownloadIcon} size={20} />
-                Batch links (.txt)
-              </label>
-            </Button>
-          </div>
+
+          <input ref={fileInputRef} type='file' accept='.txt' className='hidden' id='batch-file' onChange={uploadList} />
+
+          {/* Drop zone */}
+          <label
+            htmlFor='batch-file'
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.currentTarget.classList.add('border-rose-400', 'bg-rose-50');
+            }}
+            onDragLeave={(e) => {
+              e.currentTarget.classList.remove('border-rose-400', 'bg-rose-50');
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              e.currentTarget.classList.remove('border-rose-400', 'bg-rose-50');
+              // Transfer dropped files to the input element
+              if (fileInputRef.current && e.dataTransfer.files.length > 0) {
+                fileInputRef.current.files = e.dataTransfer.files;
+                // Trigger the change event to process the file
+                const event = new Event('change', { bubbles: true });
+                fileInputRef.current.dispatchEvent(event);
+              }
+            }}
+            className='flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-zinc-400 p-6 text-center transition-colors hover:border-rose-400 hover:bg-rose-50'
+          >
+            <div className='flex h-9 w-9 items-center justify-center rounded-lg bg-zinc-200'>
+              <HugeiconsIcon icon={CloudDownloadIcon} size={18} className='text-zinc-500' />
+            </div>
+            <div>
+              <p className='text-sm font-semibold text-zinc-800'>Drop file here</p>
+              <p className='text-xs text-zinc-500'>or click to browse</p>
+            </div>
+          </label>
         </div>
       </div>
     </div>
