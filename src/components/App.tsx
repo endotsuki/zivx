@@ -160,10 +160,7 @@ export default function VideoDownloader() {
         <PageHeader />
         <div className='rounded-xl border-[3px] border-zinc-900 bg-[#fffdfa] p-3 shadow-[4px_4px_0_0_#111827] sm:rounded-2xl sm:p-4 md:rounded-[28px] md:p-6 md:shadow-[8px_8px_0_0_#111827]'>
           <div className='mb-3 flex flex-wrap items-end justify-between gap-2 border-b-2 border-zinc-900/10 pb-2 sm:mb-4 sm:pb-3'>
-            <div>
-              <p className='text-xs font-semibold uppercase tracking-widest text-zinc-600'>Quick Add</p>
-              <h2 className='text-base font-black text-zinc-900 sm:text-lg md:text-xl'>Paste links and start downloading</h2>
-            </div>
+            <h2 className='text-base font-black text-zinc-900 sm:text-lg md:text-xl'>Paste links and start downloading</h2>
           </div>
           <DownloadControls
             videoLink={videoLink}

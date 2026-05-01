@@ -25,7 +25,7 @@ export function PageHeader() {
     <div className='mb-4 flex flex-wrap items-center justify-between gap-2 sm:mb-6 sm:gap-4'>
       <div className='flex items-center gap-1'>
         <img src='/logo.png' alt='Logo' className='h-9 w-9 sm:h-11 sm:w-11' />
-        <h1 className='text-2xl font-black tracking-tight text-zinc-900 sm:text-3xl'>Dovio</h1>
+        <h1 className='text-2xl font-black tracking-tight text-zinc-900 sm:text-3xl'>Zynk</h1>
       </div>
 
       <div className='flex items-center'>
