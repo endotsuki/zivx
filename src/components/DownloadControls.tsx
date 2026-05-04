@@ -187,14 +187,14 @@ export function DownloadControls({
                 fileInputRef.current.dispatchEvent(event);
               }
             }}
-            className='flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-zinc-400 p-4 text-center transition-colors hover:border-rose-400 hover:bg-rose-50 sm:rounded-xl sm:p-6'
+            className='flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-zinc-400 p-4 text-center transition-colors hover:border-sky-400 hover:bg-sky-50 sm:rounded-xl sm:p-6'
           >
-            <div className='tems-center flex justify-center rounded-lg bg-zinc-200 p-3'>
+            <div className='tems-center flex justify-center rounded-xl bg-zinc-200 p-3'>
               <HugeiconsIcon icon={CloudDownloadIcon} size={30} className='text-zinc-500' />
             </div>
             <div>
               <p className='text-xs font-semibold text-zinc-800 sm:text-sm'>Drop file here</p>
-              <p className='text-xs text-zinc-500'>or click to browse</p>
+              <p className='text-xs font-semibold text-zinc-500'>or click to browse</p>
             </div>
           </label>
         </div>
