@@ -33,6 +33,7 @@ export interface DownloadItem {
   filename?: string;
   filepath?: string;
   format?: string;
+  image_count?: number; // ← add this line
 }
 export interface StatsData {
   total: number;
@@ -112,7 +113,7 @@ export default function VideoDownloader() {
     });
   }, [stats.queue, selectedDirectory]);
 
-  const queueSingle = async (format: 'video' | 'audio') => {
+  const queueSingle = async (format: 'video' | 'audio' | 'image') => {
     const link = videoLink.trim();
     if (!link) return alert('Please enter a link');
     const res = await apiFetch('/api/queue', {
@@ -131,7 +132,6 @@ export default function VideoDownloader() {
     if (!file) return alert('Choose a .txt file');
     const fd = new FormData();
     fd.append('file', file);
-    // Batch uploads default to video; adjust if you need format selection for batch too
     fd.append('format', 'video');
     const res = await apiFetch('/api/upload', { method: 'POST', body: fd });
     if (res.ok) {
