@@ -64,7 +64,7 @@ export function TableRow({ item, onCancel }: TableRowProps) {
   const platformIcon = getPlatformIcon(item.url);
   const formatBadge =
     item.format === 'audio'
-      ? { label: 'M4A', color: 'bg-violet-100 text-violet-700 border-violet-300' }
+      ? { label: 'MP3', color: 'bg-violet-100 text-violet-700 border-violet-300' }
       : { label: 'MP4', color: 'bg-sky-100 text-sky-700 border-sky-300' };
   const speedLabel =
     item.status === 'Downloading'

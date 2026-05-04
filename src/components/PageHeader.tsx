@@ -25,7 +25,7 @@ export function PageHeader() {
     <div className='mb-4 flex flex-wrap items-center justify-between gap-2 sm:mb-6 sm:gap-4'>
       <div className='flex items-center gap-1'>
         <img src='/logo.png' alt='Logo' className='h-9 w-9 sm:h-11 sm:w-11' />
-        <h1 className='text-2xl font-black tracking-tight text-zinc-900 sm:text-3xl'>ZTN</h1>
+        <h1 className='text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl'>ZTN</h1>
       </div>
 
       <div className='flex items-center'>
@@ -35,7 +35,7 @@ export function PageHeader() {
               variant='outline'
               className='select-none border-2 border-zinc-900 bg-white text-xs font-bold text-zinc-900 hover:bg-rose-100 sm:text-base'
             >
-              <span className='hidden sm:inline'>Supported Services</span>
+              <span className='hidden text-zinc-700 sm:inline'>Supported Services</span>
               <span className='sm:hidden'>Services</span>
               <HugeiconsIcon icon={HelpCircleIcon} size={18} className='sm:size-6' />
             </Button>
@@ -50,7 +50,7 @@ export function PageHeader() {
                   className='flex cursor-pointer flex-col items-center gap-0.5 rounded-lg p-1.5 transition-colors hover:bg-rose-100 sm:rounded-xl sm:p-2'
                 >
                   <Icon name={platform.icon} className='h-4 w-4 text-zinc-700 sm:h-6 sm:w-6' />
-                  <span className='text-xs font-black text-zinc-700 sm:text-sm'>{platform.name}</span>
+                  <span className='text-xs font-semibold text-zinc-700 sm:text-sm'>{platform.name}</span>
                 </div>
               ))}
             </div>

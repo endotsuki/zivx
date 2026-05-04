@@ -47,7 +47,7 @@ export function TablePagination({
               <span className='hidden sm:inline'>Show</span> <span className='font-semibold text-zinc-900'>{rowsPerPage}</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='start' className='w-36 border-2 border-zinc-900 bg-[#fffdfa]'>
+          <DropdownMenuContent align='start' className='w-40 border-2 border-zinc-900 bg-[#fffdfa]'>
             <DropdownMenuLabel className='text-zinc-700'>Rows per page</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {[25, 50, 100, 200].map((value) => (

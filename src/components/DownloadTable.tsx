@@ -36,7 +36,6 @@ export function DownloadTable({
         </p>
         <Button variant='destructive' onClick={clearDownloads} size='icon' className='h-8 w-auto p-2 sm:h-10 sm:w-auto'>
           <HugeiconsIcon icon={Delete01Icon} size={16} className='sm:size-5' />
-          Delete All
         </Button>
       </div>
       {paginated.length === 0 ? (

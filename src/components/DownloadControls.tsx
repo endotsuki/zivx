@@ -1,7 +1,7 @@
 import { type RefObject } from 'react';
 import { Button } from '../ui/button';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Delete01Icon, CloudDownloadIcon, Folder03Icon, Task02Icon, MusicNote03Icon, VideoAiIcon } from '@hugeicons/core-free-icons';
+import { Delete01Icon, CloudDownloadIcon, Folder03Icon, Task02Icon, MusicNote03Icon, AiVideoIcon } from '@hugeicons/core-free-icons';
 import { AnimatePresence, motion } from 'framer-motion';
 
 interface DownloadControlsProps {
@@ -15,7 +15,7 @@ interface DownloadControlsProps {
 }
 
 const inputBase =
-  'w-full rounded-2xl border-2 border-zinc-900 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-rose-500 focus:ring-2 focus:ring-rose-200';
+  'w-full rounded-2xl border-2 border-zinc-900 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-sky-500 ';
 
 export function DownloadControls({
   videoLink,
@@ -84,7 +84,7 @@ export function DownloadControls({
               onClick={() => queueSingle('video')}
               className='h-10 flex-1 rounded-none rounded-l-xl border-2 border-r-0 border-rose-700 bg-rose-500 px-3 text-xs font-semibold text-white hover:bg-rose-600 sm:h-12 sm:px-6 sm:text-base'
             >
-              <HugeiconsIcon icon={VideoAiIcon} size={16} className='sm:size-5' />
+              <HugeiconsIcon icon={AiVideoIcon} size={16} className='sm:size-5' />
               <span className='ml-1'>MP4</span>
             </Button>
 
@@ -105,7 +105,7 @@ export function DownloadControls({
         <div className='space-y-2 rounded-xl border-2 border-zinc-900 bg-zinc-50 p-2.5 sm:rounded-2xl sm:p-3'>
           <div>
             <p className='text-xs font-black uppercase tracking-wider text-zinc-700 sm:text-sm'>Save Location</p>
-            <p className='text-xs text-zinc-500 sm:text-sm'>Choose where completed files are saved.</p>
+            <p className='text-xs font-medium text-zinc-500 sm:text-sm'>Choose where completed files are saved.</p>
           </div>
           <div className='flex min-w-0 flex-col gap-2 sm:flex-row sm:gap-2'>
             <motion.button
@@ -132,7 +132,7 @@ export function DownloadControls({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className='flex items-center gap-1.5 font-semibold'
+                    className='flex items-center gap-1.5 font-semibold text-zinc-800'
                   >
                     <HugeiconsIcon icon={Folder03Icon} size={16} className='sm:size-5' />
                     <span className='hidden sm:inline'>Choose</span> Folder
@@ -162,7 +162,7 @@ export function DownloadControls({
         <div className='space-y-2 rounded-xl border-2 border-zinc-900 bg-zinc-50 p-2.5 sm:space-y-2.5 sm:rounded-2xl sm:p-3'>
           <div>
             <p className='text-xs font-black uppercase tracking-wider text-zinc-700 sm:text-sm'>Batch Upload</p>
-            <p className='text-xs text-zinc-500 sm:text-sm'>
+            <p className='text-xs font-medium text-zinc-500 sm:text-sm'>
               Drop a <code className='rounded bg-zinc-200 px-1 py-0.5'>.txt</code> file with many URLs per file.
             </p>
           </div>
@@ -189,8 +189,8 @@ export function DownloadControls({
             }}
             className='flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-zinc-400 p-4 text-center transition-colors hover:border-rose-400 hover:bg-rose-50 sm:rounded-xl sm:p-6'
           >
-            <div className='flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-200 sm:h-9 sm:w-9'>
-              <HugeiconsIcon icon={CloudDownloadIcon} size={16} className='text-zinc-500 sm:size-4' />
+            <div className='tems-center flex justify-center rounded-lg bg-zinc-200 p-3'>
+              <HugeiconsIcon icon={CloudDownloadIcon} size={30} className='text-zinc-500' />
             </div>
             <div>
               <p className='text-xs font-semibold text-zinc-800 sm:text-sm'>Drop file here</p>
