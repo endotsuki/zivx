@@ -2,35 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Define Khmer font */
 @font-face {
   font-family: 'Montserrat';
   src: url('/fonts/Montserrat.woff2') format('woff2');
   font-weight: 400 700;
   font-style: normal;
-  /* unicode-range: U+1780-17FF, U+19E0-19FF, U+200C-200D, U+25CC; */
-  /* U+1780-17FF: Khmer characters
-     U+19E0-19FF: Khmer Symbols
-     U+200C-200D: Zero-width joiners
-     U+25CC: Dotted circle */
 }
 
 body {
   font-family: 'Montserrat', sans-serif;
-}
-
-@layer utilities {
-  @keyframes shimmer {
-    0% {
-      transform: translateX(-100%);
-    }
-
-    100% {
-      transform: translateX(100%);
-    }
-  }
-
-  .animate-shimmer {
-    animation: shimmer 2s infinite;
-  }
 }

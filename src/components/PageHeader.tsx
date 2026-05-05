@@ -33,7 +33,7 @@ export function PageHeader() {
           <DropdownMenuTrigger asChild>
             <Button
               variant='outline'
-              className='select-none border-2 border-zinc-900 bg-white text-xs font-bold text-zinc-900 hover:bg-rose-100 sm:text-base'
+              className='select-none border-2 border-zinc-900 bg-white text-xs font-bold text-zinc-900 hover:bg-zinc-100 sm:text-base'
             >
               <span className='hidden text-zinc-700 sm:inline'>Supported Services</span>
               <span className='sm:hidden'>Services</span>
@@ -47,7 +47,7 @@ export function PageHeader() {
               {supportedPlatforms.map((platform) => (
                 <div
                   key={platform.name}
-                  className='flex cursor-pointer flex-col items-center gap-0.5 rounded-lg p-1.5 transition-colors hover:bg-rose-100 sm:rounded-xl sm:p-2'
+                  className='flex cursor-pointer flex-col items-center gap-0.5 rounded-lg p-1.5 transition-colors hover:bg-zinc-100 sm:rounded-xl sm:p-2'
                 >
                   <Icon name={platform.icon} className='h-4 w-4 text-zinc-700 sm:h-6 sm:w-6' />
                   <span className='text-xs font-semibold text-zinc-700 sm:text-sm'>{platform.name}</span>
