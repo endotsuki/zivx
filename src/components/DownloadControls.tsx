@@ -110,10 +110,6 @@ export function DownloadControls({
             ))}
           </div>
         </div>
-        <p className='mt-1.5 text-[11px] text-zinc-500'>
-          <span className='font-semibold text-emerald-600'>IMG</span> downloads images from Instagram, Twitter/X, Pinterest, Reddit, Flickr,
-          and 200+ more sites at highest resolution.
-        </p>
       </div>
 
       {/* Save Folder + Batch Upload */}
