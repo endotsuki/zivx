@@ -9,7 +9,7 @@ export const getPlatformIcon = (url: string): PlatformIcon => {
   if (urlLower.includes('tiktok')) return { type: 'iconza', name: 'TikTokFill' };
   if (urlLower.includes('instagram')) return { type: 'iconza', name: 'Instagram' };
   if (urlLower.includes('pin')) return { type: 'iconza', name: 'Pinterest' };
-  if (urlLower.includes('x.com')) return { type: 'iconza', name: 'X Light' };
+  if (urlLower.includes('x.com')) return { type: 'iconza', name: 'X Dark' };
   if (urlLower.includes('linkedin')) return { type: 'iconza', name: 'LinkedIn' };
   if (urlLower.includes('reddit')) return { type: 'iconza', name: 'Reddit' };
   if (urlLower.includes('twitch')) return { type: 'iconza', name: 'Twitch' };
@@ -18,5 +18,11 @@ export const getPlatformIcon = (url: string): PlatformIcon => {
   if (urlLower.includes('xiaohongshu')) return { type: 'iconza', name: 'RedNote' };
   if (urlLower.includes('bilibili')) return { type: 'iconza', name: 'Bilibili' };
   if (urlLower.includes('vimeo')) return { type: 'iconza', name: 'Vimeo' };
+  if (urlLower.includes('capcut')) return { type: 'iconza', name: 'CapCut' };
+  if (urlLower.includes('kwai')) return { type: 'iconza', name: 'Kwai' };
+  if (urlLower.includes('behance')) return { type: 'iconza', name: 'BehanceFill' };
+  if (urlLower.includes('dribbble')) return { type: 'iconza', name: 'Dribbble' };
+  if (urlLower.includes('dai.ly') && urlLower.includes('reel')) return { type: 'iconza', name: 'Dailymotion' };
+  if (urlLower.includes('500px.com')) return { type: 'iconza', name: '500px Dark' };
   return { type: 'hugeicons', icon: Alert02Icon };
 };
